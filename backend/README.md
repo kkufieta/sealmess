@@ -25,6 +25,14 @@ This will install all of the required packages we selected within the `requireme
 
 - [jose](https://python-jose.readthedocs.io/en/latest/) JavaScript Object Signing and Encryption for JWTs. Useful for encoding, decoding, and verifying JWTS.
 
+
+## Database Setup
+You have to create the database before running the server.
+
+```bash
+createdb sealmess
+```
+
 ## Running the server
 
 Ensure first that you are working using your created virtual environment.
