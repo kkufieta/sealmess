@@ -33,6 +33,16 @@ You have to create the database before running the server.
 createdb sealmess
 ```
 
+### Migrations
+```bash
+cd src/
+export FLASK_APP=views/views.py
+# flask db init
+flask db migrate
+flask db upgrade
+# flask db downgrade
+```
+
 ## Running the server
 
 Ensure first that you are working using your created virtual environment.
