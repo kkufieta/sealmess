@@ -7,7 +7,10 @@ Customer, extends the base SQLAlchemy Model
 class Customer(db.Model):
     __tablename__ = 'customers'
 
+    # Primary key
     id = db.Column(db.Integer, primary_key=True)
+
+    # Attributes
     first_name = db.Column(db.String(120), nullable=False)
     last_name = db.Column(db.String(120), nullable=False)
     address = db.Column(db.String(120), nullable=False)
@@ -74,8 +77,7 @@ class Customer(db.Model):
             'first_name': self.first_name,
             'last_name': self.last_name,
             'address': self.address,
-            'phone': self.phone,
-            'order': self.order.format()
+            'phone': self.phone
         }
 
     def __repr__(self):
