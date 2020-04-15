@@ -2,6 +2,7 @@ from flask_migrate import Migrate
 from .shared import db
 from .config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS
 from .customers import Customer
+from .providers import Provider
 
 '''
 setup_db(app)
