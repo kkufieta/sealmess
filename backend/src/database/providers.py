@@ -7,11 +7,15 @@ Provider, extends the base SQLAlchemy Model
 class Provider(db.Model):
     __tablename__ = 'providers'
 
+    # Primary key
     id = db.Column(db.Integer, primary_key=True)
+
+    # Attributes
     name = db.Column(db.String(120), nullable=False)
     address = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(120), nullable=False)
     description = db.Column(db.String(120), nullable=False)
+    image_link = db.Column(db.String(500))
         
     def __init__(self, name, address, phone, description):
         self.name = name
@@ -69,11 +73,11 @@ class Provider(db.Model):
     def format(self):
         return {
             'id': self.id,
-            'first_name': self.first_name,
-            'last_name': self.last_name,
+            'name': self.name,
             'address': self.address,
             'phone': self.phone,
-            'order': self.order.format()
+            'description': self.description,
+            'image_link': self.image_link
         }
 
     def __repr__(self):
