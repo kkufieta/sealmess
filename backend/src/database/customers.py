@@ -10,8 +10,8 @@ class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(120), nullable=False)
     last_name = db.Column(db.String(120), nullable=False)
-    address = db.Column(db.String(120))
-    phone = db.Column(db.String(120))
+    address = db.Column(db.String(120), nullable=False)
+    phone = db.Column(db.String(120), nullable=False)
 
     # order = db.relationship('Order', backref='customers', lazy=True)
         
@@ -41,8 +41,8 @@ class Customer(db.Model):
         EXAMPLE
             customer = Customer.query.filter(Customer.id == customer_id).one_or_none()
             if customer:
-                drink.first_name = 'Kat'
-                drink.update()
+                customer.first_name = 'Kat'
+                customer.update()
     '''
     def update(self):
         db.session.commit()
@@ -60,6 +60,14 @@ class Customer(db.Model):
         db.session.delete(self)
         db.session.commit()
 
+    '''
+    format()
+        format & return a model from the database as a json
+        the model must exist in the database
+        EXAMPLE
+            customer = Customer.query.filter(Customer.id == customer_id).one_or_none()
+            print(customer.format())
+    '''
     def format(self):
         return {
             'id': self.id,
