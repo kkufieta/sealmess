@@ -1,8 +1,8 @@
-from flask import Flask, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from ..database import setup_db, db_drop_and_create_all, Customer, Provider, MenuItem, Order
+from .shared import app
+from .errors import *
 
-app = Flask(__name__)
 setup_db(app)
 
 # Do this only when you want to delete & reset the entire DB!
@@ -56,5 +56,8 @@ def home():
     print(customer)
     customer = Customer.query.filter(Customer.id == 2).one()
     print(customer)
+
+    if True:
+        abort(404)
 
     return 'Hello, kat!'
