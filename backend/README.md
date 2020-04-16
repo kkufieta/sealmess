@@ -12,7 +12,7 @@ We recommend working within a virtual environment whenever using Python for proj
 Once you have your virtual environment setup and running, install dependencies by naviging to the /backend directory and running:
 
 ```bash
-pip install -r requirements.txt
+pip3 install -r requirements.txt
 ```
 
 This will install all of the required packages we selected within the `requirements.txt` file.
@@ -41,6 +41,13 @@ export FLASK_APP=views/views.py
 flask db migrate
 flask db upgrade
 # flask db downgrade
+```
+
+### Reset Databse
+```bash
+dropdb sealmess
+createdb sealmess
+flask db upgrade
 ```
 
 ## Running the server
