@@ -42,7 +42,7 @@ class MenuItem(db.Model):
 
     '''
     update()
-        updates a new model in a database
+        updates a model in a database
         the model must exist in the database
         EXAMPLE
             menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
@@ -55,7 +55,7 @@ class MenuItem(db.Model):
 
     '''
     delete()
-        deletes a new model from a database
+        deletes a model from a database
         the model must exist in the database
         EXAMPLE
             menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()

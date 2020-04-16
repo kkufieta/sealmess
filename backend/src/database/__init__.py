@@ -4,6 +4,7 @@ from .config import SQLALCHEMY_DATABASE_URI, SQLALCHEMY_TRACK_MODIFICATIONS
 from .customers import Customer
 from .providers import Provider
 from .menu_items import MenuItem
+from .orders import Order
 
 '''
 setup_db(app)

@@ -16,7 +16,8 @@ class Customer(db.Model):
     address = db.Column(db.String(120), nullable=False)
     phone = db.Column(db.String(120), nullable=False)
 
-    # order = db.relationship('Order', backref='customers', lazy=True)
+    # Child table: Orders
+    orders = db.relationship('Order', backref='customers', lazy=True)
         
     def __init__(self, first_name, last_name, address, phone):
         self.first_name = first_name
@@ -39,7 +40,7 @@ class Customer(db.Model):
 
     '''
     update()
-        updates a new model in a database
+        updates a model in a database
         the model must exist in the database
         EXAMPLE
             customer = Customer.query.filter(Customer.id == customer_id).one_or_none()
@@ -52,7 +53,7 @@ class Customer(db.Model):
 
     '''
     delete()
-        deletes a new model from a database
+        deletes a model from a database
         the model must exist in the database
         EXAMPLE
             customer = Customer.query.filter(Customer.id == customer_id).one_or_none()
@@ -77,7 +78,8 @@ class Customer(db.Model):
             'first_name': self.first_name,
             'last_name': self.last_name,
             'address': self.address,
-            'phone': self.phone
+            'phone': self.phone,
+            'orders': [order.format() for order in self.orders]
         }
 
     def __repr__(self):

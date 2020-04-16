@@ -16,6 +16,9 @@ class Provider(db.Model):
     phone = db.Column(db.String(120), nullable=False)
     description = db.Column(db.String(120), nullable=False)
     image_link = db.Column(db.String(500))
+    
+    # Child table: Menu items
+    menu_items = db.relationship('MenuItem', backref='providers', lazy=True)
         
     def __init__(self, name, address, phone, description):
         self.name = name
@@ -38,7 +41,7 @@ class Provider(db.Model):
 
     '''
     update()
-        updates a new model in a database
+        updates a model in a database
         the model must exist in the database
         EXAMPLE
             provider = Provider.query.filter(Provider.id == provider_id).one_or_none()
@@ -51,7 +54,7 @@ class Provider(db.Model):
 
     '''
     delete()
-        deletes a new model from a database
+        deletes a model from a database
         the model must exist in the database
         EXAMPLE
             provider = Provider.query.filter(Provider.id == provider_id).one_or_none()
