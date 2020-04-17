@@ -52,10 +52,21 @@ flask db upgrade
 
 ## Running the server
 
-Ensure first that you are working using your created virtual environment.
+Ensure first that you are working using your created virtual environment,
+and that you are in the `backend` directory.
 
 To run the server, execute:
 
 ```bash
 python3 run.py
+```
+
+### Running the unittests
+Ensure first that you are working using your created virtual environment,
+and that you are in the `\backend` directory
+
+To run the unittests, execute:
+
+```bash
+python3 -m unittest
 ```
