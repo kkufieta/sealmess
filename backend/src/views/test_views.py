@@ -61,7 +61,7 @@ class SealMessTestCase(unittest.TestCase):
         self.order = {
             'customer_id': 1,
             'status': 'eaten',
-            'menu_item': menu_item
+            'menu_item': self.menu_item
         }
 
         # binds the app to the current context
