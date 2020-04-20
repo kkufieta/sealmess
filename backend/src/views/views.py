@@ -26,7 +26,7 @@ Routes: Customer (RBAC: Customer)
 @app.route('/customers', methods=['POST'])
 # @requires_auth('post:customers')
 # def post_customers(jwt_payload):
-def post_customers():
+def post_customer():
     # create customer, return success and created_id
     # Return created customer
     return jsonify({
@@ -67,20 +67,13 @@ def delete_customer(customer_id):
 Routes: Provider (RBAC Provider)
     - POST /providers
     - PATCH /providers/<int: provider_id>
-    - POST /providers/<int: provider_id>/menu
-    - PATCH /providers/<int: provider_id>/menu/<int: menu_item_id>
 
 RBAC Provider, Owner:
     - DELETE /providers/<int: provider_id>
 
-RBAC Provider, Customer, Owner:
-    - DELETE /providers/<int: provider_id>/menu/<int: menu_item_id>
-
 Public:
     - GET /providers
     - GET /providers/<int: provider_id>
-    - GET /providers/<int: provider_id>/menu
-    - GET /providers/<int: provider_id>/menu/<int: menu_item_id>
 '''
 # POST /providers -- Add a new provider to the DB
 @app.route('/providers', methods=['POST'])
@@ -91,9 +84,9 @@ def post_providers():
         'success': False
     })
 
-# GET /providers
+# GET /providers -- Get all providers
 @app.route('/providers', methods=['GET'])
-def get_provider(provider_id):
+def get_providers(provider_id):
     # Get all providers, return a list of providers
     # as a json, and success
     return jsonify({
@@ -130,17 +123,128 @@ def delete_provider(provider_id):
         'success': False
     })
 
-# GET /providers
-# GET /providers/<int: provider_id>
-# PATCH /providers/<int: provider_id>
-# DELETE /providers/<int: provider_id>
+'''
+Routes: Menu (RBAC Provider)
+    - POST /providers/<int: provider_id>/menu
+    - PATCH /providers/<int: provider_id>/menu/<int: menu_item_id>
 
-# POST /providers/<int: provider_id>/menu
+RBAC Provider, Customer, Owner:
+    - DELETE /providers/<int: provider_id>/menu/<int: menu_item_id>
+    
+Public:
+    - GET /providers/<int: provider_id>/menu
+    - GET /providers/<int: provider_id>/menu/<int: menu_item_id>
+'''
+
+# POST /providers/<int: provider_id>/menu - Post a menu-item to
+# the menu of a provider
+@app.route('/providers/<int:provider_id>/menu', methods=['POST'])
+# @requires_auth('post:providers-menu')
+# def delete_provider(jwt_payload, provider_id):
+def post_menu(provider_id):
+    # post menu item to menu of the provider given by provider_id
+    return jsonify({
+        'success': False
+    })
+
+# GET /providers/<int: provider_id>/menu - Get the menu of a provider
+@app.route('/providers/<int:provider_id>/menu', methods=['GET'])
+# @requires_auth('post:providers-menu')
+# def delete_provider(jwt_payload, provider_id):
+def get_menu(provider_id):
+    # post menu item to menu of the provider given by provider_id
+    return jsonify({
+        'success': False
+    })
+
+# GET /providers/<int: provider_id>/menu/<int: menu_item_id> - Get a menu-item
+@app.route('/providers/<int:provider_id>/menu/<int:menu_item_id>', methods=['GET'])
+# @requires_auth('post:providers-menu')
+# def delete_provider(jwt_payload, provider_id):
+def get_menu_item(provider_id):
+    # post menu item to menu of the provider given by provider_id
+    return jsonify({
+        'success': False
+    })
+
 # PATCH /providers/<int: provider_id>/menu/<int: menu_item_id>
-# GET /providers/<int: provider_id>/menu
-# GET /providers/<int: provider_id>/menu/<int: menu_item_id>
-# DELETE /providers/<int: provider_id>/menu/<int: menu_item_id>
+@app.route('/providers/<int:provider_id>/menu/<int:menu_item_id>', methods=['PATCH'])
+# @requires_auth('post:providers-menu')
+# def delete_provider(jwt_payload, provider_id):
+def patch_menu_item(provider_id, menu_item_id):
+    # post menu item to menu of the provider given by provider_id
+    return jsonify({
+        'success': False
+    })
 
+# DELETE /providers/<int: provider_id>/menu/<int: menu_item_id>
+@app.route('/providers/<int:provider_id>/menu/<int:menu_item_id>', methods=['DELETE'])
+# @requires_auth('post:providers-menu')
+# def delete_provider(jwt_payload, provider_id):
+def delete_menu_item(provider_id, menu_item_id):
+    # post menu item to menu of the provider given by provider_id
+    return jsonify({
+        'success': False
+    })
+
+'''
+Routes: Order (RBAC Customer)
+    - POST /customers/<int: customer_id>/order
+    - GET /customers/<int: customer_id>/order
+    - GET /customers/<int: customer_id>/order/<int: order_id>
+    - DELETE /customers/<int: customer_id>/order/<int: order_id>
+'''
+
+# POST /customers/<int: customer_id>/order - Post an order item to
+# the order of a customer
+@app.route('/customers/<int:customer_id>/order', methods=['POST'])
+# @requires_auth('post:providers-menu')
+# def delete_provider(jwt_payload, provider_id):
+def post_order(customer_id):
+    # post menu item to menu of the provider given by provider_id
+    return jsonify({
+        'success': False
+    })
+
+# GET /customers/<int: customer_id>/order - Get the order of a customer
+@app.route('/customers/<int:customer_id>/order', methods=['GET'])
+# @requires_auth('post:providers-menu')
+# def delete_provider(jwt_payload, provider_id):
+def get_order(customer_id):
+    # post menu item to menu of the provider given by provider_id
+    return jsonify({
+        'success': False
+    })
+
+# GET /customers/<int: customer_id>/order/<int: order_item_id> - Get an order item
+@app.route('/customers/<int:customer_id>/order/<int:order_item_id>', methods=['GET'])
+# @requires_auth('post:providers-menu')
+# def delete_provider(jwt_payload, provider_id):
+def get_order_item(customer_id):
+    # post menu item to menu of the provider given by provider_id
+    return jsonify({
+        'success': False
+    })
+
+# PATCH /customers/<int: customer_id>/order/<int: order_item_id>
+@app.route('/customers/<int:customer_id>/order/<int:order_item_id>', methods=['PATCH'])
+# @requires_auth('post:providers-menu')
+# def delete_provider(jwt_payload, provider_id):
+def patch_order_item(customer_id, order_item_id):
+    # post menu item to menu of the provider given by provider_id
+    return jsonify({
+        'success': False
+    })
+
+# DELETE /customers/<int: customer_id>/order/<int: order_item_id>
+@app.route('/customers/<int:customer_id>/order/<int:order_item_id>', methods=['DELETE'])
+# @requires_auth('post:providers-menu')
+# def delete_provider(jwt_payload, provider_id):
+def delete_order_item(customer_id, order_item_id):
+    # post menu item to menu of the provider given by provider_id
+    return jsonify({
+        'success': False
+    })
 
 # ======
 # ROUTES

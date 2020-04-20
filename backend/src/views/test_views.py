@@ -247,21 +247,13 @@ class SealMessTestCase(unittest.TestCase):
     Tests: Provider (RBAC Provider)
         - POST /providers
         - PATCH /providers/<int: provider_id>
-        - POST /providers/<int: provider_id>/menu
-        - PATCH /providers/<int: provider_id>/menu/<int: menu_item_id>
 
     RBAC Provider, Owner:
         - DELETE /providers/<int: provider_id>
-
-    RBAC Provider, Customer, Owner:
-        - DELETE /providers/<int: provider_id>/menu/<int: menu_item_id>
         
     Public:
         - GET /providers
         - GET /providers/<int: provider_id>
-        - GET /providers/<int: provider_id>/menu
-        - GET /providers/<int: provider_id>/menu/<int: menu_item_id>
-
 
         Invalid actions that should throw an error:
             - Invalid authentication & identification
@@ -270,6 +262,7 @@ class SealMessTestCase(unittest.TestCase):
             - DELETE /providers/<int: provider_id> for invalid id
         
     '''
+
     # POST /providers -- Add a new provider to DB
     # DELETE /providers/<int: provider_id> -- Delete a provider
     def test_200_create_and_delete_provider(self):
@@ -343,7 +336,47 @@ class SealMessTestCase(unittest.TestCase):
         self.assertisinstance(data['provider'], dict)
         # TODO: check that returned provider is patched correctly!
 
+    # POST /providers/<int: provider_id>/menu/<int: menu_item_id>
+    def test_405_create_menu_item_not_allowed(self):
+        res = self.client().post('/providers/1/menu/1', json=self.menu_item)
+        data = json.loads(res.data)
 
+        self.check_405(res, data)
+
+    # PATCH /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
+    # DELETE /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
+    def test_422_menu_item_does_not_exist(self):
+        # PATCH
+        res = self.client().patch('/providers/1/menu/1000', json=self.patch_menu_item)
+        data = json.loads(res.data)
+
+        self.check_422(res, data)
+
+        # DELETE
+        res = self.client().delete('/providers/1/menu/1000')
+        data = json.loads(res.data)
+
+        self.check_422(res, data)
+
+    '''
+    Tests: Menu (RBAC Provider)
+        - POST /providers/<int: provider_id>/menu
+        - PATCH /providers/<int: provider_id>/menu/<int: menu_item_id>
+
+    RBAC Provider, Customer, Owner:
+        - DELETE /providers/<int: provider_id>/menu/<int: menu_item_id>
+        
+    Public:
+        - GET /providers/<int: provider_id>/menu
+        - GET /providers/<int: provider_id>/menu/<int: menu_item_id>
+
+        Invalid actions that should throw an error:
+            - Invalid authentication & identification
+            - POST /providers/<int: provider_id>/menu/<int: menu_item_id>
+            - PATCH /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
+            - DELETE /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
+        
+    '''
     # POST /providers/<int: provider_id>/menu -- Add a new menu-item to DB
     # DELETE /providers/<int: provider_id>/menu/<int: menu_item_id> - Delete a menu-item
     def test_200_create_and_delete_menu_item(self):
