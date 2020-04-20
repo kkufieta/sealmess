@@ -100,7 +100,8 @@ def not_found(error):
 
 '''
 422 error handler: unprocessable entity
-    The request was well-formed but was unable to be followed due to semantic errors.
+    The request was well-formed but was unable to be followed
+    due to semantic errors.
 '''
 @app.errorhandler(422)
 def unprocessable_entity(error):

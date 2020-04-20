@@ -11,7 +11,8 @@ from .views import *
 class SealMessTestCase(unittest.TestCase):
     """This class represents the sealmess test case"""
 
-    def setUp(self):
+    @classmethod
+    def setUpClass(self):
         """Define test variables and initialize app."""
         self.app = app
         self.client = self.app.test_client
@@ -117,7 +118,6 @@ class SealMessTestCase(unittest.TestCase):
         res = self.client().get('/')
         data = json.loads(res.data)
         self.check_200(res, data)
-        print(data)
 
     '''
     def test_create_new_actor_casting_assistant(self):
@@ -162,21 +162,26 @@ class SealMessTestCase(unittest.TestCase):
     # POST /customers -- Add a new customer to DB 
     # DELETE /customers/<int: customer_id> -- Delete a customer
     def test_200_create_and_delete_customer(self):
-        # Create a question, test if it works properly
+        # Create a customer, test if it works properly
         res = self.client().post('/customers', json=self.customer)
         data = json.loads(res.data)
+        print('this is the result & data: ', res, data)
 
         self.check_200(res, data)
         self.assertTrue(data['created_id'])
+        self.assertTrue(data['customer'])
 
         # Save id of created question so we can delete it
         created_id = data['created_id']
+        print(created_id)
 
         # Test if deleting a question works properly
         res = self.client().delete('/customers/' + str(created_id))
         data = json.loads(res.data)
+        print('trying to delete customer: ', res, data)
 
         customer = Customer.query.filter(Customer.id == created_id).one_or_none()
+        print('customer: ', customer)
 
         self.check_200(res, data)
         self.assertEqual(customer, None)
@@ -184,7 +189,7 @@ class SealMessTestCase(unittest.TestCase):
     
     
     # POST /customers -- Add a new customer to DB 
-    def test_200_create_customer(self):
+    def test_0_200_create_customer(self):
         # Create a question, test if it works properly
         res = self.client().post('/customers', json=self.customer)
         data = json.loads(res.data)
@@ -192,8 +197,6 @@ class SealMessTestCase(unittest.TestCase):
         self.check_200(res, data)
         self.assertTrue(data['created_id'])
         self.assertTrue(data['customer'])
-        self.assertisinstance(data['customer'], dict)
-        # TODO: Check that customer is added correctly
 
     # GET /customers/<int: customer_id> -- Get customer details
     def test_200_get_customer(self):
@@ -287,7 +290,7 @@ class SealMessTestCase(unittest.TestCase):
         self.assertEqual(data['deleted_id'], created_id)
 
     # POST /provider -- Add a new provider to DB 
-    def test_200_create_provider(self):
+    def test_0_200_create_provider(self):
         res = self.client().post('/providers', json=self.provider)
         data = json.loads(res.data)
 
@@ -336,27 +339,28 @@ class SealMessTestCase(unittest.TestCase):
         self.assertisinstance(data['provider'], dict)
         # TODO: check that returned provider is patched correctly!
 
-    # POST /providers/<int: provider_id>/menu/<int: menu_item_id>
-    def test_405_create_menu_item_not_allowed(self):
-        res = self.client().post('/providers/1/menu/1', json=self.menu_item)
+    # POST /providers/<int: provider_id>
+    def test_405_create_provider_not_allowed(self):
+        res = self.client().post('/providers/1', json=self.provider)
         data = json.loads(res.data)
 
         self.check_405(res, data)
 
-    # PATCH /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
-    # DELETE /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
-    def test_422_menu_item_does_not_exist(self):
+    # PATCH /providers/<int: provider_id> for invalid id
+    # DELETE /providers/<int: provider_id> for invalid id
+    def test_422_provider_does_not_exist(self):
         # PATCH
-        res = self.client().patch('/providers/1/menu/1000', json=self.patch_menu_item)
+        res = self.client().patch('/providers/1000', json=self.patch_provider)
         data = json.loads(res.data)
 
         self.check_422(res, data)
 
         # DELETE
-        res = self.client().delete('/providers/1/menu/1000')
+        res = self.client().delete('/providers/1000')
         data = json.loads(res.data)
 
         self.check_422(res, data)
+
 
     '''
     Tests: Menu (RBAC Provider)
@@ -401,7 +405,7 @@ class SealMessTestCase(unittest.TestCase):
         self.assertEqual(data['deleted_id'], created_id)
 
     # POST /providers/1/menu -- Add a new menu-item to DB 
-    def test_200_create_customer(self):
+    def test_0_200_create_menu_item(self):
         # Create a question, test if it works properly
         res = self.client().post('/providers/1/menu/', json=self.menu_item)
         data = json.loads(res.data)
@@ -423,24 +427,24 @@ class SealMessTestCase(unittest.TestCase):
     # All of the above for anyone else except RBAC Customer
         # Test for: public, Provider, Owner
 
-    # POST /providers/<int: provider_id>
-    def test_405_create_provider_not_allowed(self):
-        res = self.client().post('/providers/1', json=self.provider)
+    # POST /providers/<int: provider_id>/menu/<int: menu_item_id>
+    def test_405_create_menu_item_not_allowed(self):
+        res = self.client().post('/providers/1/menu/1', json=self.menu_item)
         data = json.loads(res.data)
 
         self.check_405(res, data)
 
-    # PATCH /providers/<int: provider_id> for invalid id
-    # DELETE /providers/<int: provider_id> for invalid id
-    def test_422_provider_does_not_exist(self):
+    # PATCH /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
+    # DELETE /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
+    def test_422_menu_item_does_not_exist(self):
         # PATCH
-        res = self.client().patch('/providers/1000', json=self.patch_provider)
+        res = self.client().patch('/providers/1/menu/1000', json=self.patch_menu_item)
         data = json.loads(res.data)
 
         self.check_422(res, data)
 
         # DELETE
-        res = self.client().delete('/providers/1000')
+        res = self.client().delete('/providers/1/menu/1000')
         data = json.loads(res.data)
 
         self.check_422(res, data)
@@ -482,7 +486,7 @@ class SealMessTestCase(unittest.TestCase):
         self.assertEqual(data['deleted_id'], created_id)
 
     # POST /customers/<int: customer_id>/orders -- Add a new order to DB
-    def test_200_create_order(self):
+    def test_0_200_create_order(self):
         res = self.client().post('/customers/1/orders', json=self.order)
         data = json.loads(res.data)
 
