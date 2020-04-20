@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from flask import request
 from ..database import setup_db, db_drop_and_create_all, Customer, Provider, MenuItem, Order
 from .shared import app
 from .errors import *
@@ -7,11 +8,12 @@ setup_db(app)
 
 # Do this only when you want to delete & reset the entire DB!
 # db_drop_and_create_all()
-
 @app.route('/')
 def home():
+    print('successfully hit home!')
     return jsonify({
-        'success': True
+        'success': True,
+        'message': "Welcome to Sealmess!"
     })
 
 
@@ -22,16 +24,51 @@ Routes: Customer (RBAC: Customer)
     - PATCH /customers/<int: customer_id>
     - DELETE /customers/<int: customer_id>
 '''
-# POST /customers -- Add a new customer to the DB
+# POST /customers 
+#   Add a new customer to the DB
+#   Creates a new row in the customers table
+#   Requires the post:customers permission
+#   Returns status code 200 and json:
+#   {'success': True, 'customer': customer, 'created_id': created_id}
 @app.route('/customers', methods=['POST'])
 # @requires_auth('post:customers')
 # def post_customers(jwt_payload):
 def post_customer():
-    # create customer, return success and created_id
-    # Return created customer
-    return jsonify({
-        'success': False
-    })
+    print('in post customer')
+    body = request.get_json()
+    print(body)
+    if not body:
+        print('no body')
+        abort(400)
+    keys = ['first_name', 'last_name', 'address', 'phone']
+    if not all(key in body for key in keys):
+        print('wrong keys', keys, body)
+        abort(422)
+    if not all(isinstance(key, str) for key in keys):
+        print('422')
+        abort(422)
+    try:
+        first_name = body['first_name']
+        last_name = body['last_name'] 
+        address = body['address']
+        phone = body['phone'] 
+        print('try: ', first_name, last_name, address, phone)
+        # create customer, return success, customer, and created_id
+        customer = Customer(first_name=first_name,
+                            last_name=last_name,
+                            address=address,
+                            phone=phone)
+        print(customer)
+        print('trying to insert')
+        customer.insert()
+        # Return created customer
+        return jsonify({
+            'success': True,
+            'created_id': customer.id,
+            'customer': customer.format()
+        })
+    except Exception as e:
+        abort(400)
 
 # GET /customers/<int:customer_id>
 @app.route('/customers/<int:customer_id>', methods=['GET'])
@@ -59,6 +96,7 @@ def patch_customer(customer_id):
 # def delete_customer(jwt_payload, customer_id):
 def delete_customer(customer_id):
     # delete customer, return deleted_id
+    print('in delete: ', customer_id)
     return jsonify({
         'success': False
     })
@@ -86,7 +124,7 @@ def post_providers():
 
 # GET /providers -- Get all providers
 @app.route('/providers', methods=['GET'])
-def get_providers(provider_id):
+def get_providers():
     # Get all providers, return a list of providers
     # as a json, and success
     return jsonify({
