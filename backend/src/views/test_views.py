@@ -165,7 +165,6 @@ class SealMessTestCase(unittest.TestCase):
         # Create a customer, test if it works properly
         res = self.client().post('/customers', json=self.customer)
         data = json.loads(res.data)
-        print('this is the result & data: ', res, data)
 
         self.check_200(res, data)
         self.assertTrue(data['created_id'])
@@ -173,15 +172,12 @@ class SealMessTestCase(unittest.TestCase):
 
         # Save id of created question so we can delete it
         created_id = data['created_id']
-        print(created_id)
 
         # Test if deleting a question works properly
         res = self.client().delete('/customers/' + str(created_id))
         data = json.loads(res.data)
-        print('trying to delete customer: ', res, data)
 
         customer = Customer.query.filter(Customer.id == created_id).one_or_none()
-        print('customer: ', customer)
 
         self.check_200(res, data)
         self.assertEqual(customer, None)

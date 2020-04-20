@@ -10,7 +10,6 @@ setup_db(app)
 # db_drop_and_create_all()
 @app.route('/')
 def home():
-    print('successfully hit home!')
     return jsonify({
         'success': True,
         'message': "Welcome to Sealmess!"
@@ -34,32 +33,24 @@ Routes: Customer (RBAC: Customer)
 # @requires_auth('post:customers')
 # def post_customers(jwt_payload):
 def post_customer():
-    print('in post customer')
     body = request.get_json()
-    print(body)
     if not body:
-        print('no body')
         abort(400)
     keys = ['first_name', 'last_name', 'address', 'phone']
     if not all(key in body for key in keys):
-        print('wrong keys', keys, body)
         abort(422)
     if not all(isinstance(key, str) for key in keys):
-        print('422')
         abort(422)
     try:
         first_name = body['first_name']
         last_name = body['last_name'] 
         address = body['address']
         phone = body['phone'] 
-        print('try: ', first_name, last_name, address, phone)
         # create customer, return success, customer, and created_id
         customer = Customer(first_name=first_name,
                             last_name=last_name,
                             address=address,
                             phone=phone)
-        print(customer)
-        print('trying to insert')
         customer.insert()
         # Return created customer
         return jsonify({
@@ -91,15 +82,27 @@ def patch_customer(customer_id):
     })
 
 # DELETE /customers/<int:customer_id>
+#   responds with 404 error if <customer_id> is not found
+#   deletes corresponding row for <customer_id>
+#   requires the 'delete:customer' permission
 @app.route('/customers/<int:customer_id>', methods=['DELETE'])
 # @requires_auth('delete:customers')
 # def delete_customer(jwt_payload, customer_id):
 def delete_customer(customer_id):
     # delete customer, return deleted_id
-    print('in delete: ', customer_id)
-    return jsonify({
-        'success': False
-    })
+    if not customer_id:
+        abort(404)
+    try:
+        customer = Customer.query.filter(Customer.id == customer_id).one_or_none()
+        if not customer:
+            abort(404)
+        customer.delete()
+        return jsonify({
+            'success': True,
+            'deleted_id': customer_id
+        })
+    except Exception as e:
+        abort(404)
 
 '''
 Routes: Provider (RBAC Provider)
