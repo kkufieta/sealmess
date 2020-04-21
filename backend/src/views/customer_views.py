@@ -13,9 +13,7 @@ Routes: Customer (RBAC: Customer)
 # POST /customers 
 #   Add a new customer to the DB
 #   Creates a new row in the customers table
-#   Requires the post:customers permission
-#   Returns status code 200 and json:
-#   {'success': True, 'customer': customer, 'created_id': created_id}
+#   Requires the 'post:customers' permission
 @app.route('/customers', methods=['POST'])
 # @requires_auth('post:customers')
 # def post_customers(jwt_payload):
@@ -26,7 +24,7 @@ def post_customer():
     keys = ['first_name', 'last_name', 'address', 'phone']
     if not all(key in body for key in keys):
         abort(422)
-    if not all(isinstance(key, str) for key in keys):
+    if not all(isinstance(body[key], str) for key in keys):
         abort(422)
     try:
         first_name = body['first_name']

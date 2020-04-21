@@ -29,7 +29,7 @@ def post_providers():
     keys = ['name', 'address', 'phone', 'description']
     if not all(key in body for key in keys):
         abort(422)
-    if not all(isinstance(key, str) for key in keys):
+    if not all(isinstance(body[key], str) for key in keys):
         abort(422)
     try:
         name = body['name']
