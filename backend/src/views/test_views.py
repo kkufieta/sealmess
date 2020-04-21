@@ -458,13 +458,18 @@ class SealMessTestCase(unittest.TestCase):
 
     # PATCH /providers/<int: provider_id>/menu/<int: menu_item_id> - Edit & update a menu-item
     def test_200_patch_menu_item(self):
-        res = self.client().patch('/providers/1/menu/1',
+        provider_id = 1
+        menu_item_id = 1
+        res = self.client().patch('/providers/' + str(provider_id) + 
+                                  '/menu/' + str(menu_item_id),
                                   json=self.patch_menu_item)
         data = json.loads(res.data)
 
         self.check_200(res, data)
         self.assertTrue(data['menu_item'])
+        self.assertTrue(data['menu_item_id'])
         self.assertTrue(isinstance(data['menu_item'], dict))
+        self.assertEqual(data['menu_item']['provider_id'], provider_id)
         for key in self.patch_menu_item:
             self.assertEqual(data['menu_item'][key], self.patch_menu_item[key])
     
@@ -482,14 +487,26 @@ class SealMessTestCase(unittest.TestCase):
     # PATCH /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
     # DELETE /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
     def test_404_menu_item_does_not_exist(self):
-        # PATCH
+        # PATCH - menu_item id doesn't exist
         res = self.client().patch('/providers/1/menu/1000', json=self.patch_menu_item)
         data = json.loads(res.data)
 
         self.check_404(res, data)
 
-        # DELETE
+        # PATCH - provider id doesn't exist
+        res = self.client().patch('/providers/1000/menu/1', json=self.patch_menu_item)
+        data = json.loads(res.data)
+
+        self.check_404(res, data)
+
+        # DELETE - menu_item id doesn't exist
         res = self.client().delete('/providers/1/menu/1000')
+        data = json.loads(res.data)
+
+        self.check_404(res, data)
+
+        # DELETE - provider id doesn't exist
+        res = self.client().delete('/providers/1000/menu/1')
         data = json.loads(res.data)
 
         self.check_404(res, data)
