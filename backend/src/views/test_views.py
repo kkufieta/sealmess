@@ -234,18 +234,18 @@ class SealMessTestCase(unittest.TestCase):
 
     # PATCH /customers/<int: customer_id> with invalid id
     # DELETE /customers/<int: customer_id> with invalid id
-    def test_422_customer_does_not_exist(self):
+    def test_404_customer_does_not_exist(self):
         # PATCH
         res = self.client().patch('/customers/1000', json=self.patch_customer)
         data = json.loads(res.data)
 
-        self.check_422(res, data)
+        self.check_404(res, data)
 
         # DELETE
         res = self.client().delete('/customers/1000')
         data = json.loads(res.data)
 
-        self.check_422(res, data)
+        self.check_404(res, data)
 
     '''
     Tests: Provider (RBAC Provider)
@@ -349,18 +349,18 @@ class SealMessTestCase(unittest.TestCase):
 
     # PATCH /providers/<int: provider_id> for invalid id
     # DELETE /providers/<int: provider_id> for invalid id
-    def test_422_provider_does_not_exist(self):
+    def test_404_provider_does_not_exist(self):
         # PATCH
         res = self.client().patch('/providers/1000', json=self.patch_provider)
         data = json.loads(res.data)
 
-        self.check_422(res, data)
+        self.check_404(res, data)
 
         # DELETE
         res = self.client().delete('/providers/1000')
         data = json.loads(res.data)
 
-        self.check_422(res, data)
+        self.check_404(res, data)
 
 
     '''
@@ -437,18 +437,18 @@ class SealMessTestCase(unittest.TestCase):
 
     # PATCH /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
     # DELETE /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
-    def test_422_menu_item_does_not_exist(self):
+    def test_404_menu_item_does_not_exist(self):
         # PATCH
         res = self.client().patch('/providers/1/menu/1000', json=self.patch_menu_item)
         data = json.loads(res.data)
 
-        self.check_422(res, data)
+        self.check_404(res, data)
 
         # DELETE
         res = self.client().delete('/providers/1/menu/1000')
         data = json.loads(res.data)
 
-        self.check_422(res, data)
+        self.check_404(res, data)
 
     '''
     Tests: Order (RBAC Customer)
@@ -531,12 +531,12 @@ class SealMessTestCase(unittest.TestCase):
         self.check_405(res, data)
 
     # DELETE /customers/<int: customer_id>/orders/<int: order_id> for invalid id
-    def test_422_order_does_not_exist(self):
+    def test_404_order_does_not_exist(self):
         # PATCH
         res = self.client().delete('/customers/1/orders/1000')
         data = json.loads(res.data)
 
-        self.check_422(res, data)
+        self.check_404(res, data)
 
     '''
     Tests: RBAC Owner
