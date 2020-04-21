@@ -333,13 +333,17 @@ class SealMessTestCase(unittest.TestCase):
 
     # PATCH /providers/<int: provider_id> -- Edit & update a provider
     def test_200_patch_provider(self):
-        res = self.client().patch('/providers/1', json=self.patch_provider)
+        id = 1
+        res = self.client().patch('/providers/' + str(id),
+                                  json=self.patch_provider)
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.asserttrue(data['provider'])
-        self.assertisinstance(data['provider'], dict)
-        # TODO: check that returned provider is patched correctly!
+        self.assertTrue(data['provider'])
+        self.assertEqual(data['updated_id'], id)
+        self.assertTrue(isinstance(data['provider'], dict))
+        for key in self.patch_provider:
+            self.assertEqual(data['provider'][key], self.patch_provider[key])
 
     # POST /providers/<int: provider_id>
     def test_405_create_provider_not_allowed(self):

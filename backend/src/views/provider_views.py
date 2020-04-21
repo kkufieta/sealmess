@@ -83,15 +83,36 @@ def get_provider(provider_id):
     })
 
 # PATCH /providers/<int:provider_id>
+#   responds with 404 if <provider_id> is not found
+#   updates the corresponding row for <provider_id>
+#   requires the 'patch:provider' permission
 @app.route('/providers/<int:provider_id>', methods=['PATCH'])
-# @requires_auth('patch:providers')
+# @requires_auth('patch:provider')
 # def patch_provider(jwt_payload, provider_id):
 def patch_provider(provider_id):
-    # Grab the provider, patch the provider with new data,
-    # return success and patched provider data
-    return jsonify({
-        'success': False
-    })
+    if not provider_id:
+        abort(400)
+    body = request.get_json()
+    if not body:
+        abort(400)
+    keys = ['name', 'address', 'phone', 'description', 'image_link']
+    if not any(key in body for key in keys):
+        abort(400)
+    provider = Provider.query.filter(Provider.id == provider_id).one_or_none()
+    if not provider:
+        abort(404)
+    try:
+        for key in keys:
+            if key in body:
+                setattr(provider, key, body[key])
+        provider.update()
+        return jsonify({
+            'success': True,
+            'updated_id': provider_id,
+            'provider': provider.format()
+        })
+    except Exception as e:
+        abort(400)
 
 # DELETE /providers/<int:provider_id>
 @app.route('/providers/<int:provider_id>', methods=['DELETE'])
