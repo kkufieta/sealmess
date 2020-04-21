@@ -96,17 +96,17 @@ def delete_customer(customer_id):
     # delete customer, return deleted_id
     if not customer_id:
         abort(400)
+    customer = Customer.query.filter(Customer.id == customer_id).one_or_none()
+    if not customer:
+        abort(404)
     try:
-        customer = Customer.query.filter(Customer.id == customer_id).one_or_none()
-        if not customer:
-            abort(404)
         customer.delete()
         return jsonify({
             'success': True,
             'deleted_id': customer_id
         })
     except Exception as e:
-        abort(404)
+        abort(400)
 
 '''
 Routes: Provider (RBAC Provider)
