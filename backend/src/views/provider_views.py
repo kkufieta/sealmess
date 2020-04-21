@@ -55,6 +55,7 @@ def post_providers():
 
 
 # GET /providers -- Get all providers
+# Open to public
 @app.route('/providers', methods=['GET'])
 def get_providers():
     # Get all providers, return a list of providers
@@ -68,12 +69,17 @@ def get_providers():
         abort(404)
 
 # GET /providers/<int:provider_id>
+# Open to public
 @app.route('/providers/<int:provider_id>', methods=['GET'])
 def get_provider(provider_id):
-    # Get provider based on id, return provider information
-    # as a json, and success
+    if not provider_id:
+        abort(400)
+    provider = Provider.query.filter(Provider.id == provider_id).one_or_none()
+    if not provider:
+        abort(404)
     return jsonify({
-        'success': False
+        'success': True,
+        'provider': provider.format()
     })
 
 # PATCH /providers/<int:provider_id>
