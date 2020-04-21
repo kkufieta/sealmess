@@ -136,12 +136,26 @@ def patch_menu_item(provider_id, menu_item_id):
     except Exception as e:
         abort(400)
 
-# DELETE /providers/<int:provider_id>
-@app.route('/providers/<int:provider_id>__', methods=['DELETE'])
-# @requires_auth('delete:providers')
-# def delete_provider(jwt_payload, provider_id):
-def delete_provider_(provider_id):
-    # delete provider, return deleted_id
-    return jsonify({
-        'success': False
-    })
+# DELETE /providers/<int:provider_id>/menu/<int:menu_item_id>
+#   responds with 404 error if <provider_id> or <menu_item_id> is not found
+#   deletes corresponding row for <menu_item_id> in menu_items table
+#   requires the 'delete:menu_item' permission
+@app.route('/providers/<int:provider_id>/menu/<int:menu_item_id>', methods=['DELETE'])
+# @requires_auth('delete:menu_item')
+# def delete_menu_item(jwt_payload, provider_id, menu_item_id):
+def delete_menu_item(provider_id, menu_item_id):
+    if not provider_id or not menu_item_id:
+        abort(400)
+    menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
+    if not menu_item:
+        abort(404)
+    if menu_item.provider_id != provider_id:
+        abort(400)
+    try:
+        menu_item.delete()
+        return jsonify({
+            'success': True,
+            'deleted_id': menu_item_id
+        })
+    except Exception as e:
+        abort(400)
