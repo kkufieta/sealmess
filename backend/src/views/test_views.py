@@ -89,6 +89,16 @@ class SealMessTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'bad request')
 
+    def check_401(self, res, data):
+        self.assertEqual(res.status_code, 401)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'unauthorized')
+
+    def check_403(self, res, data):
+        self.assertEqual(res.status_code, 403)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'forbidden')
+
     def check_404(self, res, data):
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
