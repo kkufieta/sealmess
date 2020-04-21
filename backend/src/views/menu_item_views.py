@@ -15,14 +15,54 @@ Public:
     - GET /providers
     - GET /providers/<int: provider_id>
 '''
-# POST /providers -- Add a new provider to the DB
-@app.route('/providers__', methods=['POST'])
-# @requires_auth('post:providers')
-def post_providers_():
-    # create provider, return success and created_id
-    return jsonify({
-        'success': False
-    })
+
+# POST /providers/<provider_id>/menu
+#   Add a new menu item to the DB
+#   Creates a new row in the menu_items table
+#   Requires the 'post:menu' permission
+@app.route('/providers/<provider_id>/menu', methods=['POST'])
+# @requires_auth('post:menu')
+# def post_menu_item(jwt_payload, provider_id):
+def post_menu_item(provider_id):
+    if not provider_id:
+        abort(400)
+    body = request.get_json()
+    if not body:
+        abort(400)
+    keys = ['provider_id', 'name', 'description', 'price']
+    if not all(key in body for key in keys):
+        abort(422)
+    if str(body['provider_id']) != str(provider_id):
+        abort(422)
+    if not isinstance(body['provider_id'], int):
+        abort(422)
+    if not all(isinstance(body[key], str) for key in
+               ['name', 'description']):
+        abort(422)
+    if not isinstance(body['price'], float):
+        abort(422)
+    try:
+        provider_id = body['provider_id']
+        name = body['name']
+        description = body['description']
+        price = body['price']
+        if 'image_link' in body:
+            image_link = body['image_link']
+        else:
+            image_link = ''
+        # create menu item
+        menu_item = MenuItem(provider_id=provider_id, name=name,
+                             description=description, price=price,
+                             image_link=image_link)
+        menu_item.insert()
+        return jsonify({
+            'success': True,
+            'created_id': menu_item.id,
+            'menu_item': menu_item.format()
+        })
+    except Exception as e:
+        abort(400)
+
 
 # GET /providers -- Get all providers
 @app.route('/providers__', methods=['GET'])
