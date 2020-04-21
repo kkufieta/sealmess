@@ -58,10 +58,14 @@ def post_providers():
 @app.route('/providers', methods=['GET'])
 def get_providers():
     # Get all providers, return a list of providers
-    # as a json, and success
-    return jsonify({
-        'success': False
-    })
+    try:
+        providers = Provider.query.order_by(Provider.id).all()
+        return jsonify({
+            'success': True,
+            'providers': [provider.format() for provider in providers]
+        })
+    except Exception as e:
+        abort(404)
 
 # GET /providers/<int:provider_id>
 @app.route('/providers/<int:provider_id>', methods=['GET'])
