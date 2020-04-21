@@ -77,13 +77,38 @@ def get_customer(customer_id):
     })
 
 # PATCH /customers/<int:customer_id>
+#   responds with 404 if <customer_id> is not found
+#   updates the corresponding row for <customer_id>
+#   requires the 'patch:customer' permission
 @app.route('/customers/<int:customer_id>', methods=['PATCH'])
+# @requires_auth('patch:customer')
+# def patch_customer(jwt_payload, customer_id):
 def patch_customer(customer_id):
-    # Grab the customer, patch the customer with new data,
-    # return success and patched customer data
-    return jsonify({
-        'success': False
-    })
+    if not customer_id:
+        abort(400)
+    body = request.get_json()
+    keys = ['first_name', 'last_name', 'address', 'phone']
+    if not any(key in body for key in keys):
+        abort(400)
+    if not body:
+        abort(400)
+    customer = Customer.query.filter(Customer.id == customer_id).one_or_none()
+    if not customer:
+        abort(404)
+    try:
+        for key in keys:
+            if key in body:
+                setattr(customer, key, body[key])
+        customer.update()
+        
+        return jsonify({
+            'success': True,
+            'updated_id': customer_id,
+            'customer': customer.format()
+        })
+    except Exception as e:
+        abort(400)
+
 
 # DELETE /customers/<int:customer_id>
 #   responds with 404 error if <customer_id> is not found
