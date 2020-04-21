@@ -209,13 +209,15 @@ class SealMessTestCase(unittest.TestCase):
 
     # PATCH /customers/<int: customer_id> -- Edit & update a customer
     def test_200_patch_customer(self):
-        res = self.client().patch('/customers/1', json=self.patch_customer)
+        id = 1
+        res = self.client().patch('/customers/' + str(id), json=self.patch_customer)
         data = json.loads(res.data)
 
         self.check_200(res, data)
         self.assertTrue(data['customer'])
-        self.assertisinstance(data['customer'], dict)
-        # TODO: check that returned customer is patched correctly!
+        self.assertEqual(data['updated_id'], id)
+        for key in self.patch_customer:
+            self.assertEqual(data['customer'][key], self.patch_customer[key])
 
     # TODO: -- invalid actions that should throw an error:
     # All of the above for anyone else except RBAC Customer
