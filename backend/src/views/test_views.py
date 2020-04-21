@@ -427,6 +427,34 @@ class SealMessTestCase(unittest.TestCase):
         self.assertTrue(data['menu_item'])
         self.assertTrue(isinstance(data['menu_item'], dict))
 
+    # GET /providers/1/menu -- Get the menu of a provider
+    def test_200_get_menu(self):
+        provider_id = 1
+        res = self.client().get('/providers/' + str(provider_id) + '/menu')
+        data = json.loads(res.data)
+
+        self.check_200(res, data)
+        self.assertTrue(data['menu'])
+        self.assertTrue(data['provider_id'])
+        self.assertTrue(isinstance(data['menu'], list))
+        self.assertEqual(data['provider_id'], provider_id)
+
+    # GET /providers/1/menu/1 -- Get a menu item
+    def test_200_get_menu_item(self):
+        provider_id = 1
+        menu_item_id = 1
+        res = self.client().get('/providers/' + str(provider_id) + 
+                                '/menu/' + str(menu_item_id))
+        data = json.loads(res.data)
+
+        self.check_200(res, data)
+        self.assertTrue(data['menu_item'])
+        self.assertTrue(data['provider_id'])
+        self.assertTrue(data['menu_item_id'])
+        self.assertEqual(data['provider_id'], provider_id)
+        self.assertEqual(data['menu_item_id'], menu_item_id)
+        self.assertTrue(isinstance(data['menu_item'], dict))
+
     # PATCH /providers/<int: provider_id>/menu/<int: menu_item_id> - Edit & update a menu-item
     def test_200_patch_menu_item(self):
         res = self.client().patch('/providers/1/menu/1',
