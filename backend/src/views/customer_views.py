@@ -76,10 +76,10 @@ def patch_customer(customer_id):
     if not customer_id:
         abort(400)
     body = request.get_json()
+    if not body:
+        abort(400)
     keys = ['first_name', 'last_name', 'address', 'phone']
     if not any(key in body for key in keys):
-        abort(400)
-    if not body:
         abort(400)
     customer = Customer.query.filter(Customer.id == customer_id).one_or_none()
     if not customer:
