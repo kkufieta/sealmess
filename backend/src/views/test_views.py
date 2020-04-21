@@ -174,6 +174,7 @@ class SealMessTestCase(unittest.TestCase):
         self.check_200(res, data)
         self.assertTrue(data['created_id'])
         self.assertTrue(data['customer'])
+        self.assertTrue(isinstance(data['customer'], dict))
 
         # Save id of created question so we can delete it
         created_id = data['created_id']
@@ -198,6 +199,7 @@ class SealMessTestCase(unittest.TestCase):
         self.check_200(res, data)
         self.assertTrue(data['created_id'])
         self.assertTrue(data['customer'])
+        self.assertTrue(isinstance(data['customer'], dict))
 
     # GET /customers/<int: customer_id> -- Get customer details
     def test_200_get_customer(self):
@@ -206,6 +208,7 @@ class SealMessTestCase(unittest.TestCase):
 
         self.check_200(res, data)
         self.assertTrue(data['customer'])
+        self.assertTrue(isinstance(data['customer'], dict))
 
     # PATCH /customers/<int: customer_id> -- Edit & update a customer
     def test_200_patch_customer(self):
@@ -215,6 +218,7 @@ class SealMessTestCase(unittest.TestCase):
 
         self.check_200(res, data)
         self.assertTrue(data['customer'])
+        self.assertTrue(isinstance(data['customer'], dict))
         self.assertEqual(data['updated_id'], id)
         for key in self.patch_customer:
             self.assertEqual(data['customer'][key], self.patch_customer[key])
@@ -274,6 +278,8 @@ class SealMessTestCase(unittest.TestCase):
 
         self.check_200(res, data)
         self.assertTrue(data['created_id'])
+        self.assertTrue(data['provider'])
+        self.assertTrue(isinstance(data['provider'], dict))
 
         # Save id of created question so we can delete it
         created_id = data['created_id']
@@ -296,6 +302,7 @@ class SealMessTestCase(unittest.TestCase):
         self.check_200(res, data)
         self.assertTrue(data['created_id'])
         self.assertTrue(data['provider'])
+        self.assertTrue(isinstance(data['provider'], dict))
 
         # Add a second provider to test database
         res = self.client().post('/providers', json=self.provider)
@@ -304,6 +311,7 @@ class SealMessTestCase(unittest.TestCase):
         self.check_200(res, data)
         self.assertTrue(data['created_id'])
         self.assertTrue(data['provider'])
+        self.assertTrue(isinstance(data['provider'], dict))
 
     # GET /providers -- Get a list of all providers
     def test_200_get_all_providers(self):
@@ -320,9 +328,8 @@ class SealMessTestCase(unittest.TestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.asserttrue(data['provider'])
-        self.assertisinstance(data['provider'], dict)
-        # TODO: check that returned customer is correct!
+        self.assertTrue(data['provider'])
+        self.assertTrue(isinstance(data['provider'], dict))
 
     # PATCH /providers/<int: provider_id> -- Edit & update a provider
     def test_200_patch_provider(self):
@@ -385,6 +392,8 @@ class SealMessTestCase(unittest.TestCase):
 
         self.check_200(res, data)
         self.assertTrue(data['created_id'])
+        self.assertTrue(data['menu_item'])
+        self.assertTrue(isinstance(data['menu_item'], dict))
 
         # Save id of created question so we can delete it
         created_id = data['created_id']
@@ -407,6 +416,8 @@ class SealMessTestCase(unittest.TestCase):
 
         self.check_200(res, data)
         self.assertTrue(data['created_id'])
+        self.assertTrue(data['menu_item'])
+        self.assertTrue(isinstance(data['menu_item'], dict))
         # TODO: Check that menu item is added correctly
 
     # PATCH /providers/<int: provider_id>/menu/<int: menu_item_id> - Edit & update a menu-item
@@ -415,7 +426,8 @@ class SealMessTestCase(unittest.TestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.asserttrue(data['menu'])
+        self.assertTrue(data['menu_item'])
+        self.assertTrue(isinstance(data['menu_item'], dict))
         # TODO: check that returned menu-item is patched correctly!
     
     # TODO: -- invalid actions that should throw an error:
