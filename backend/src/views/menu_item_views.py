@@ -82,13 +82,23 @@ def get_menu(provider_id):
         abort(404)
 
 
-# GET /providers/<int:provider_id>
-@app.route('/providers/<int:provider_id>__', methods=['GET'])
-def get_provider_(provider_id):
-    # Get provider based on id, return provider information
-    # as a json, and success
+# GET /providers/<int:provider_id>/menu/<int:menu_item_id>
+#   Get a menu item out of the menu of a provider
+#   Open to public
+@app.route('/providers/<int:provider_id>/menu/<int:menu_item_id>', methods=['GET'])
+def get_menu_item(provider_id, menu_item_id):
+    if not provider_id or not menu_item_id:
+        abort(400)
+    menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
+    if not menu_item:
+        abort(404)
+    if not menu_item.provider_id == provider_id:
+        abort(400)
     return jsonify({
-        'success': False
+        'success': True,
+        'menu_item': menu_item.format(),
+        'provider_id': provider_id,
+        'menu_item_id': menu_item_id
     })
 
 # PATCH /providers/<int:provider_id>

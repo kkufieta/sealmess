@@ -454,6 +454,7 @@ class SealMessTestCase(unittest.TestCase):
         self.assertEqual(data['provider_id'], provider_id)
         self.assertEqual(data['menu_item_id'], menu_item_id)
         self.assertTrue(isinstance(data['menu_item'], dict))
+        self.assertEqual(data['menu_item']['provider_id'], provider_id)
 
     # PATCH /providers/<int: provider_id>/menu/<int: menu_item_id> - Edit & update a menu-item
     def test_200_patch_menu_item(self):
