@@ -191,7 +191,7 @@ class SealMessTestCase(unittest.TestCase):
     
     
     # POST /customers -- Add a new customer to DB 
-    def test_0_200_create_customer(self):
+    def test_00_200_create_customer(self):
         # Create a question, test if it works properly
         res = self.client().post('/customers', json=self.customer)
         data = json.loads(res.data)
@@ -295,7 +295,7 @@ class SealMessTestCase(unittest.TestCase):
         self.assertEqual(data['deleted_id'], created_id)
 
     # POST /provider -- Add a new provider to DB 
-    def test_0_200_create_provider(self):
+    def test_00_200_create_provider(self):
         res = self.client().post('/providers', json=self.provider)
         data = json.loads(res.data)
 
@@ -369,7 +369,7 @@ class SealMessTestCase(unittest.TestCase):
 
 
     '''
-    Tests: Menu (RBAC Provider)
+    Tests: MenuItem (RBAC Provider)
         - POST /providers/<int: provider_id>/menu
         - PATCH /providers/<int: provider_id>/menu/<int: menu_item_id>
 
@@ -391,7 +391,9 @@ class SealMessTestCase(unittest.TestCase):
     # DELETE /providers/<int: provider_id>/menu/<int: menu_item_id> - Delete a menu-item
     def test_200_create_and_delete_menu_item(self):
         # Create a question, test if it works properly
-        res = self.client().post('/providers/1/menu', json=self.menu_item)
+        provider_id = self.menu_item['provider_id']
+        res = self.client().post('/providers/' + str(provider_id) + '/menu',
+                                 json=self.menu_item)
         data = json.loads(res.data)
 
         self.check_200(res, data)
@@ -403,7 +405,8 @@ class SealMessTestCase(unittest.TestCase):
         created_id = data['created_id']
 
         # Test if deleting a question works properly
-        res = self.client().delete('/providers/1/menu/' + str(created_id))
+        res = self.client().delete('/providers/' + str(provider_id) +
+                                   '/menu/' + str(created_id))
         data = json.loads(res.data)
 
         menu_item = MenuItem.query.filter(MenuItem.id == created_id).one_or_none()
@@ -413,26 +416,28 @@ class SealMessTestCase(unittest.TestCase):
         self.assertEqual(data['deleted_id'], created_id)
 
     # POST /providers/1/menu -- Add a new menu-item to DB 
-    def test_0_200_create_menu_item(self):
-        # Create a question, test if it works properly
-        res = self.client().post('/providers/1/menu/', json=self.menu_item)
+    def test_01_200_create_menu_item(self):
+        provider_id = self.menu_item['provider_id']
+        res = self.client().post('/providers/' + str(provider_id) + '/menu',
+                                 json=self.menu_item)
         data = json.loads(res.data)
 
         self.check_200(res, data)
         self.assertTrue(data['created_id'])
         self.assertTrue(data['menu_item'])
         self.assertTrue(isinstance(data['menu_item'], dict))
-        # TODO: Check that menu item is added correctly
 
     # PATCH /providers/<int: provider_id>/menu/<int: menu_item_id> - Edit & update a menu-item
     def test_200_patch_menu_item(self):
-        res = self.client().patch('/providers/1/menu/1', json=self.patch_menu_item)
+        res = self.client().patch('/providers/1/menu/1',
+                                  json=self.patch_menu_item)
         data = json.loads(res.data)
 
         self.check_200(res, data)
         self.assertTrue(data['menu_item'])
         self.assertTrue(isinstance(data['menu_item'], dict))
-        # TODO: check that returned menu-item is patched correctly!
+        for key in self.patch_menu_item:
+            self.assertEqual(data['menu_item'][key], self.patch_menu_item[key])
     
     # TODO: -- invalid actions that should throw an error:
     # All of the above for anyone else except RBAC Customer
@@ -497,7 +502,7 @@ class SealMessTestCase(unittest.TestCase):
         self.assertEqual(data['deleted_id'], created_id)
 
     # POST /customers/<int: customer_id>/orders -- Add a new order to DB
-    def test_0_200_create_order(self):
+    def test_02_200_create_order(self):
         res = self.client().post('/customers/1/orders', json=self.order)
         data = json.loads(res.data)
 
