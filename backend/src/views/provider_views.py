@@ -115,11 +115,23 @@ def patch_provider(provider_id):
         abort(400)
 
 # DELETE /providers/<int:provider_id>
+#   responds with 404 error if <provider_id> is not found
+#   deletes corresponding row for <provider_id>
+#   requires the 'delete:provider' permission
 @app.route('/providers/<int:provider_id>', methods=['DELETE'])
-# @requires_auth('delete:providers')
+# @requires_auth('delete:provider')
 # def delete_provider(jwt_payload, provider_id):
 def delete_provider(provider_id):
-    # delete provider, return deleted_id
-    return jsonify({
-        'success': False
-    })
+    if not provider_id:
+        abort(400)
+    provider = Provider.query.filter(Provider.id == provider_id).one_or_none()
+    if not provider:
+        abort(404)
+    try:
+        provider.delete()
+        return jsonify({
+            'success': True,
+            'deleted_id': provider_id
+        })
+    except Exception as e:
+        abort(400)
