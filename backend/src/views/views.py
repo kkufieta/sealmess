@@ -62,15 +62,24 @@ def post_customer():
         abort(400)
 
 # GET /customers/<int:customer_id>
+#   requres the 'get:customer' permission
 @app.route('/customers/<int:customer_id>', methods=['GET'])
 # @requires_auth('get:customer')
 # def get_customer(jwt_payload, customer_id):
 def get_customer(customer_id):
     # Get customer based on id, return customer information
-    # as a json, and success
-    return jsonify({
-        'success': False
-    })
+    if not customer_id:
+        abort(400)
+    try:
+        customer = Customer.query.filter_by(Customer.id == customer_id).one_or_none()
+        if not customer:
+            abort(404)
+        return jsonify({
+            'success': True,
+            'customer': customer.format()
+        })
+    except Exception as e:
+        abort(404)
 
 # PATCH /customers/<int:customer_id>
 @app.route('/customers/<int:customer_id>', methods=['PATCH'])
@@ -91,7 +100,7 @@ def patch_customer(customer_id):
 def delete_customer(customer_id):
     # delete customer, return deleted_id
     if not customer_id:
-        abort(404)
+        abort(400)
     try:
         customer = Customer.query.filter(Customer.id == customer_id).one_or_none()
         if not customer:

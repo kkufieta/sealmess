@@ -201,8 +201,6 @@ class SealMessTestCase(unittest.TestCase):
 
         self.check_200(res, data)
         self.assertTrue(data['customer'])
-        self.assertisinstance(data['customer'], dict)
-        # TODO: check that returned customer is correct!
 
     # PATCH /customers/<int: customer_id> -- Edit & update a customer
     def test_200_patch_customer(self):
