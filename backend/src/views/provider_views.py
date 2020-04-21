@@ -15,14 +15,44 @@ Public:
     - GET /providers
     - GET /providers/<int: provider_id>
 '''
-# POST /providers -- Add a new provider to the DB
+# POST /providers
+#   Add a new provider to the DB
+#   Creates a new row in the providers table
+# Requires the 'post:providers' permission
 @app.route('/providers', methods=['POST'])
 # @requires_auth('post:providers')
+# def post_providers(jwt_payload)
 def post_providers():
-    # create provider, return success and created_id
-    return jsonify({
-        'success': False
-    })
+    body = request.get_json()
+    if not body:
+        abort(400)
+    keys = ['name', 'address', 'phone', 'description']
+    if not all(key in body for key in keys):
+        abort(422)
+    if not all(isinstance(key, str) for key in keys):
+        abort(422)
+    try:
+        name = body['name']
+        address = body['address']
+        phone = body['phone']
+        description = body['description']
+        if 'image_link' in body:
+            image_link = body['image_link']
+        else:
+            image_link = ''
+        # create provider
+        provider = Provider(name=name, address=address,
+                            phone=phone, description=description,
+                            image_link=image_link)
+        provider.insert()
+        return jsonify({
+            'success': True,
+            'created_id': provider.id,
+            'provider': provider.format()
+        })
+    except Exception as e:
+        abort(400)
+
 
 # GET /providers -- Get all providers
 @app.route('/providers', methods=['GET'])

@@ -264,9 +264,7 @@ class SealMessTestCase(unittest.TestCase):
             - POST /providers/<int: provider_id>
             - PATCH /providers/<int: provider_id> for invalid id
             - DELETE /providers/<int: provider_id> for invalid id
-        
     '''
-
     # POST /providers -- Add a new provider to DB
     # DELETE /providers/<int: provider_id> -- Delete a provider
     def test_200_create_and_delete_provider(self):
@@ -298,8 +296,6 @@ class SealMessTestCase(unittest.TestCase):
         self.check_200(res, data)
         self.assertTrue(data['created_id'])
         self.assertTrue(data['provider'])
-        self.assertisinstance(data['provider'], dict)
-        # TODO: Check that provider is added correctly
 
         # Add a second provider to test database
         res = self.client().post('/providers', json=self.provider)
@@ -308,7 +304,6 @@ class SealMessTestCase(unittest.TestCase):
         self.check_200(res, data)
         self.assertTrue(data['created_id'])
         self.assertTrue(data['provider'])
-        self.assertisinstance(data['provider'], dict)
 
     # GET /providers -- Get a list of all providers
     def test_200_get_all_providers(self):

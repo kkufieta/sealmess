@@ -20,11 +20,12 @@ class Provider(db.Model):
     # Child table: Menu items
     menu_items = db.relationship('MenuItem', backref='providers', lazy=True)
         
-    def __init__(self, name, address, phone, description):
+    def __init__(self, name, address, phone, description, image_link=''):
         self.name = name
         self.address = address
         self.phone = phone
         self.description = description
+        self.image_link = image_link
 
     '''
     insert()
@@ -32,7 +33,8 @@ class Provider(db.Model):
         the model must have a unique id or null id
         EXAMPLE
             provider = Provider(name=name, address=address,
-                                phone=phone, description=description)
+                                phone=phone, description=description,
+                                image_link=image_link)
             provider.insert()
     '''
     def insert(self):

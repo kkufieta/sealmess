@@ -19,7 +19,7 @@ class MenuItem(db.Model):
     price = db.Column(db.Float, nullable=False)
     image_link = db.Column(db.String(500))
 
-    def __init__(self, provider_id, name, description, price, image_link):
+    def __init__(self, provider_id, name, description, price, image_link=''):
         self.provider_id = provider_id
         self.name = name
         self.description = description
