@@ -68,16 +68,13 @@ def get_customer(customer_id):
     # Get customer based on id, return customer information
     if not customer_id:
         abort(400)
-    try:
-        customer = Customer.query.filter_by(Customer.id == customer_id).one_or_none()
-        if not customer:
-            abort(404)
-        return jsonify({
-            'success': True,
-            'customer': customer.format()
-        })
-    except Exception as e:
+    customer = Customer.query.filter(Customer.id == customer_id).one_or_none()
+    if not customer:
         abort(404)
+    return jsonify({
+        'success': True,
+        'customer': customer.format()
+    })
 
 # PATCH /customers/<int:customer_id>
 @app.route('/customers/<int:customer_id>', methods=['PATCH'])
