@@ -64,14 +64,23 @@ def post_menu_item(provider_id):
         abort(400)
 
 
-# GET /providers -- Get all providers
-@app.route('/providers__', methods=['GET'])
-def get_providers_():
-    # Get all providers, return a list of providers
-    # as a json, and success
-    return jsonify({
-        'success': False
-    })
+# GET /providers/<int:provider_id>/menu
+#   Get the menu of a provider
+#   Open to public
+@app.route('/providers/<int:provider_id>/menu', methods=['GET'])
+def get_menu(provider_id):
+    if not provider_id:
+        abort(400)
+    try:
+        menu = MenuItem.query.filter(MenuItem.provider_id == provider_id).all()
+        return jsonify({
+            'success': True,
+            'menu': [menu_item.format() for menu_item in menu],
+            'provider_id': provider_id
+        })
+    except Exception as e:
+        abort(404)
+
 
 # GET /providers/<int:provider_id>
 @app.route('/providers/<int:provider_id>__', methods=['GET'])
