@@ -116,7 +116,7 @@ def patch_provider(provider_id):
 
 # DELETE /providers/<int:provider_id>
 #   responds with 404 error if <provider_id> is not found
-#   deletes corresponding row for <provider_id>
+#   deletes corresponding row for <provider_id> in providers table
 #   requires the 'delete:provider' permission
 @app.route('/providers/<int:provider_id>', methods=['DELETE'])
 # @requires_auth('delete:provider')
