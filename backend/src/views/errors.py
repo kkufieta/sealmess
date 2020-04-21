@@ -77,7 +77,7 @@ def not_found(error):
     return jsonify({
         'success': False,
         'error': 404,
-        'message': 'not found'
+        'message': 'resource not found'
     }), 404
 
 
