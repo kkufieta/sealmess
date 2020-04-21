@@ -119,11 +119,6 @@ class SealMessTestCase(unittest.TestCase):
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'internal server error')
 
-    def check_503(self, res, data):
-        self.assertEqual(res.status_code, 503)
-        self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'service unavailable')
-
     def test_200_home(self):
         res = self.client().get('/')
         data = json.loads(res.data)
