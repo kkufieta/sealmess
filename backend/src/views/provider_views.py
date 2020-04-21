@@ -55,7 +55,7 @@ def post_providers():
 
 
 # GET /providers -- Get all providers
-# Open to public
+#   Open to public
 @app.route('/providers', methods=['GET'])
 def get_providers():
     # Get all providers, return a list of providers
@@ -69,7 +69,7 @@ def get_providers():
         abort(404)
 
 # GET /providers/<int:provider_id>
-# Open to public
+#   Open to public
 @app.route('/providers/<int:provider_id>', methods=['GET'])
 def get_provider(provider_id):
     if not provider_id:
