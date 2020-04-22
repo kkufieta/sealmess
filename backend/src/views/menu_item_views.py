@@ -120,6 +120,9 @@ def patch_menu_item(provider_id, menu_item_id):
     menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
     if not menu_item:
         abort(404)
+    provider = Provider.query.filter(Provider.id == provider_id).one_or_none()
+    if not provider:
+        abort(404)
     if not menu_item.provider_id == provider_id:
         abort(400)
     try:
@@ -148,6 +151,9 @@ def delete_menu_item(provider_id, menu_item_id):
         abort(400)
     menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
     if not menu_item:
+        abort(404)
+    provider = Provider.query.filter(Provider.id == provider_id).one_or_none()
+    if not provider:
         abort(404)
     if menu_item.provider_id != provider_id:
         abort(400)
