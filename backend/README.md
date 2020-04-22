@@ -65,6 +65,13 @@ python3 run.py
 Ensure first that you are working using your created virtual environment,
 and that you are in the `\backend` directory
 
+Prepare the test database:
+```bash
+dropdb sealmess_test
+createdb sealmess_test
+psql sealmess_test < src/database/sealmess_test_db.psql
+```
+
 To run the unittests, execute:
 
 ```bash
