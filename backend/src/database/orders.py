@@ -19,18 +19,33 @@ class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
 
     # Foreign key
-    customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'), nullable=False)
+    customer_id = db.Column(db.Integer, db.ForeignKey('customers.id'),
+                            nullable=False)
 
     # Attributes
     status = db.Column(db.String(120), nullable=False)
-    created_at = db.Column(db.DateTime, server_default=db.func.now(), nullable=False)
+    created_at = db.Column(db.DateTime, server_default=db.func.now(),
+                           nullable=False)
 
     menu_items = db.relationship('MenuItem', secondary=order_items,
-      backref=db.backref('orders', lazy=True))
+                                 backref=db.backref('orders', lazy=True))
         
-    def __init__(self, customer_id, status):
+    def __init__(self, customer_id, status, menu_items=[]):
         self.customer_id = customer_id
         self.status = status
+        self.menu_items = menu_items
+
+    '''
+    insert()
+        inserts a new model into a database
+        EXAMPLE
+            order = Order(customer_id=customer_id, status=status,
+                          menu_items=[menu_item_1, menu_item_2, ...])
+            order.insert()
+    '''
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
 
     '''
     add_menu_item()
@@ -40,10 +55,10 @@ class Order(db.Model):
             menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
             if order and menu_item:
                 order.add_menu_item(menu_item)
-                order.update()
     '''
     def add_menu_item(self, menu_item):
         self.menu_items.append(menu_item)
+        db.session.commit()
 
     '''
     empty_order()
@@ -52,20 +67,9 @@ class Order(db.Model):
             order = Order.query.filter(Order.id == order_id).one_or_none()
             if order:
                 order.empty_order()
-                order.update()
     '''
     def empty_order(self):
         self.menu_items = []
-
-    '''
-    insert()
-        inserts a new model into a database
-        EXAMPLE
-            order = Order(customer_id=customer_id, menu_item_id=menu_item_id)
-            order.insert()
-    '''
-    def insert(self):
-        db.session.add(self)
         db.session.commit()
 
     '''
