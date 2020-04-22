@@ -10,7 +10,7 @@ Routes: Order (RBAC Customer)
     - GET /customers/<int: customer_id>/order/<int: order_id>
     - DELETE /customers/<int: customer_id>/order/<int: order_id>
 '''
-# POST /customers/<int: customer_id>/order
+# POST /customers/<int: customer_id>/orders
 #   Add a new order to the customer with <customer_id>
 #   Creates a new row in the orders table
 #   Requires the 'post:order' permission
@@ -42,6 +42,37 @@ def post_order(customer_id):
         return jsonify({
             'success': True,
             'created_id': order.id,
+            'order': order.format()
+        })
+    except Exception as e:
+        abort(400)
+
+# POST /orders/<int:order_id>/menu_items
+#   Add a new menu-item to an existing order
+#   Requires the 'post:order' permission
+@app.route('/orders/<int:order_id>/menu_items', methods=['POST'])
+# @requires_auth('post:order')
+# def add_menu_items_to_order(jwt_payload, order_id):
+def add_menu_items_to_order(order_id):
+    if not order_id:
+        abort(400)
+    body = request.get_json()
+    if not body or not 'menu_item_ids' in body:
+        abort(400)
+    order = Order.query.filter(Order.id == order_id).one_or_none()
+    if not order:
+        abort(404)
+    try:
+        for menu_item_id in body['menu_item_ids']:
+            menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
+            if not menu_item:
+                abort(400)
+            order.menu_items.append(menu_item)
+        order.update()
+
+        return jsonify({
+            'success': True,
+            'order_id': order.id,
             'order': order.format()
         })
     except Exception as e:

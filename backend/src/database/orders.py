@@ -55,10 +55,10 @@ class Order(db.Model):
             menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
             if order and menu_item:
                 order.add_menu_item(menu_item)
+                order.update()
     '''
     def add_menu_item(self, menu_item):
         self.menu_items.append(menu_item)
-        db.session.commit()
 
     '''
     empty_order()
@@ -67,10 +67,10 @@ class Order(db.Model):
             order = Order.query.filter(Order.id == order_id).one_or_none()
             if order:
                 order.empty_order()
+                order.update()
     '''
     def empty_order(self):
         self.menu_items = []
-        db.session.commit()
 
     '''
     update()

@@ -66,7 +66,6 @@ class SealMessTestCase(unittest.TestCase):
         }
 
         self.order_add_menu_items = {
-            'order_id': 1,
             'menu_item_ids': [1, 1]
         }
 
@@ -552,17 +551,6 @@ class SealMessTestCase(unittest.TestCase):
         self.assertEqual(order, None)
         self.assertEqual(data['deleted_id'], created_id)
 
-        # self.order = {
-            # 'customer_id': 1,
-            # 'status': 'eaten',
-            # 'menu_item_ids': [1]
-        # }
-
-        # self.order_add_menu_items = {
-            # 'order_id': 1,
-            # 'menu_item_ids': [1, 1]
-        # }
-
     # POST /customers/<int: customer_id>/orders -- Add a new order to DB
     def test_02_200_create_order(self):
         customer_id = self.order['customer_id']
@@ -584,14 +572,15 @@ class SealMessTestCase(unittest.TestCase):
         self.assertTrue(data['order'])
 
     # POST /orders/<int:order_id> -- Add a new order to DB
-    def test_02_200_add_menu_items_to_order(self):
-        res = self.client().post('/orders/1', json=self.order_add_menu_items)
+    def test_03_200_add_menu_items_to_order(self):
+        order_id = 1
+        res = self.client().post('/orders/' + str(order_id) + '/menu_items',
+                                 json=self.order_add_menu_items)
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['created_id'])
+        self.assertTrue(data['order_id'])
         self.assertTrue(data['order'])
-        # TODO: Check that order is added correctly
 
     # GET /customers/<int: customer_id>/orders -- Get all orders from a customer
     def test_200_get_all_orders(self):
