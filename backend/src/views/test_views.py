@@ -593,11 +593,15 @@ class SealMessTestCase(unittest.TestCase):
         self.assertTrue(isinstance(data['orders'], list))
 
     # GET /customers/<int: customer_id>/orders/<int: order_id> -- Get order details
-    def test_200_get_order_details(self):
+    def test_200_get_order(self):
         res = self.client().get('/customers/1/orders/1')
         data = json.loads(res.data)
 
         self.check_200(res, data)
+        self.assertTrue(data['customer_id'])
+        self.assertTrue(data['order_id'])
+        self.assertTrue(data['order'])
+        self.assertTrue(isinstance(data['order'], dict))
 
     # POST /customers/<int: customer_id>/orders/<int: order_id>
     def test_405_create_order_not_allowed(self):

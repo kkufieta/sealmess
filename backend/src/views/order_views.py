@@ -99,14 +99,24 @@ def get_orders(customer_id):
         abort(404)
         
 
-# GET /customers/<int: customer_id>/order/<int: order_item_id> - Get an order item
+# GET /customers/<int:customer_id>/order/<int:order_item_id>
+#   Get an order
 @app.route('/customers/<int:customer_id>/orders/<int:order_id>', methods=['GET'])
-# @requires_auth('post:providers-menu')
-# def delete_provider(jwt_payload, provider_id):
-def get_order_item(customer_id, order_id):
-    # post menu item to menu of the provider given by provider_id
+# @requires_auth('get:orders')
+# def get_order(jwt_payload, customer_id, order_id):
+def get_order(customer_id, order_id):
+    if not customer_id or not order_id:
+        abort(400)
+    order = Order.query.filter(Order.id == order_id).one_or_none()
+    if not order:
+        abort(404)
+    if not order.customer_id == customer_id:
+        abort(400)
     return jsonify({
-        'success': False
+        'success': True,
+        'order': order.format(),
+        'customer_id': customer_id,
+        'order_id': order_id
     })
 
 # PATCH /customers/<int: customer_id>/order/<int: order_item_id>
