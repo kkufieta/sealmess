@@ -39,6 +39,7 @@ class Order(db.Model):
     insert()
         inserts a new model into a database
         EXAMPLE
+            # menu_item_x is a MenuItem object
             order = Order(customer_id=customer_id, status=status,
                           menu_items=[menu_item_1, menu_item_2, ...])
             order.insert()
