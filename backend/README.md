@@ -75,5 +75,5 @@ psql sealmess_test < src/database/sealmess_test_db.psql
 To run the unittests, execute:
 
 ```bash
-python3 -m unittest
+python3 -m unittest src/tests/run_tests.py -v
 ```
