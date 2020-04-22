@@ -2,6 +2,7 @@ from flask import request
 from ..database import setup_db, db_drop_and_create_all, Customer, Provider, MenuItem, Order
 from .shared import app
 from .errors import *
+from ..auth import *
 
 '''
 Routes: Customer (RBAC: Customer)
@@ -13,11 +14,10 @@ Routes: Customer (RBAC: Customer)
 # POST /customers 
 #   Add a new customer to the DB
 #   Creates a new row in the customers table
-#   Requires the 'post:customers' permission
+#   Requires the 'post:customer' permission
 @app.route('/customers', methods=['POST'])
-# @requires_auth('post:customers')
-# def post_customers(jwt_payload):
-def post_customer():
+@requires_auth('post:customer')
+def post_customer(jwt_payload):
     body = request.get_json()
     if not body:
         abort(400)
@@ -49,9 +49,8 @@ def post_customer():
 # GET /customers/<int:customer_id>
 #   requres the 'get:customer' permission
 @app.route('/customers/<int:customer_id>', methods=['GET'])
-# @requires_auth('get:customer')
-# def get_customer(jwt_payload, customer_id):
-def get_customer(customer_id):
+@requires_auth('get:customer')
+def get_customer(jwt_payload, customer_id):
     # Get customer based on id, return customer information
     if not customer_id:
         abort(400)
@@ -68,9 +67,8 @@ def get_customer(customer_id):
 #   updates the corresponding row for <customer_id>
 #   requires the 'patch:customer' permission
 @app.route('/customers/<int:customer_id>', methods=['PATCH'])
-# @requires_auth('patch:customer')
-# def patch_customer(jwt_payload, customer_id):
-def patch_customer(customer_id):
+@requires_auth('patch:customer')
+def patch_customer(jwt_payload, customer_id):
     if not customer_id:
         abort(400)
     body = request.get_json()
@@ -101,9 +99,8 @@ def patch_customer(customer_id):
 #   deletes corresponding row for <customer_id>
 #   requires the 'delete:customer' permission
 @app.route('/customers/<int:customer_id>', methods=['DELETE'])
-# @requires_auth('delete:customers')
-# def delete_customer(jwt_payload, customer_id):
-def delete_customer(customer_id):
+@requires_auth('delete:customer')
+def delete_customer(jwt_payload, customer_id):
     # delete customer, return deleted_id
     if not customer_id:
         abort(400)
