@@ -18,7 +18,7 @@ Public:
 # POST /providers
 #   Add a new provider to the DB
 #   Creates a new row in the providers table
-# Requires the 'post:providers' permission
+#   Requires the 'post:providers' permission
 @app.route('/providers', methods=['POST'])
 # @requires_auth('post:providers')
 # def post_providers(jwt_payload)
