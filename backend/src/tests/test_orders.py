@@ -26,8 +26,8 @@ class OrderTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['created_id'])
-        self.assertTrue(data['order'])
+        self.assertIsNotNone(data['created_id'])
+        self.assertIsNotNone(data['order'])
 
         # Save id of created question so we can delete it
         created_id = data['created_id']
@@ -40,7 +40,7 @@ class OrderTestCase(BaseTestCase):
         order = Order.query.filter(Order.id == created_id).one_or_none()
 
         self.check_200(res, data)
-        self.assertEqual(order, None)
+        self.assertIsNone(order)
         self.assertEqual(data['deleted_id'], created_id)
 
     # POST /customers/<int: customer_id>/orders -- Add a new order to DB
@@ -51,8 +51,8 @@ class OrderTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['created_id'])
-        self.assertTrue(data['order'])
+        self.assertIsNotNone(data['created_id'])
+        self.assertIsNotNone(data['order'])
 
         # Add a second order to test database
         res = self.client().post('/customers/' + str(customer_id) + '/orders',
@@ -60,8 +60,8 @@ class OrderTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['created_id'])
-        self.assertTrue(data['order'])
+        self.assertIsNotNone(data['created_id'])
+        self.assertIsNotNone(data['order'])
 
     # POST /orders/<int:order_id> -- Add a new order to DB
     def test_200_add_menu_items_to_order(self):
@@ -71,8 +71,8 @@ class OrderTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['order_id'])
-        self.assertTrue(data['order'])
+        self.assertIsNotNone(data['order_id'])
+        self.assertIsNotNone(data['order'])
 
     # GET /customers/<int: customer_id>/orders -- Get all orders from a customer
     def test_200_get_all_orders(self):
@@ -80,9 +80,9 @@ class OrderTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['customer_id'])
-        self.assertTrue(data['orders'])
-        self.assertTrue(isinstance(data['orders'], list))
+        self.assertIsNotNone(data['customer_id'])
+        self.assertIsNotNone(data['orders'])
+        self.assertIsInstance(data['orders'], list)
 
     # GET /customers/<int: customer_id>/orders/<int: order_id> -- Get order details
     def test_200_get_order(self):
@@ -90,10 +90,10 @@ class OrderTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['customer_id'])
-        self.assertTrue(data['order_id'])
-        self.assertTrue(data['order'])
-        self.assertTrue(isinstance(data['order'], dict))
+        self.assertIsNotNone(data['customer_id'])
+        self.assertIsNotNone(data['order_id'])
+        self.assertIsNotNone(data['order'])
+        self.assertIsInstance(data['order'], dict)
 
     # POST /customers/<int: customer_id>/orders/<int: order_id>
     def test_405_create_order_not_allowed(self):

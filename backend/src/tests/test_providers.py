@@ -30,9 +30,9 @@ class ProviderTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['created_id'])
-        self.assertTrue(data['provider'])
-        self.assertTrue(isinstance(data['provider'], dict))
+        self.assertIsNotNone(data['created_id'])
+        self.assertIsNotNone(data['provider'])
+        self.assertIsInstance(data['provider'], dict)
 
         # Save id of created question so we can delete it
         created_id = data['created_id']
@@ -44,7 +44,7 @@ class ProviderTestCase(BaseTestCase):
         provider = Provider.query.filter(Provider.id == created_id).one_or_none()
 
         self.check_200(res, data)
-        self.assertEqual(provider, None)
+        self.assertIsNone(provider)
         self.assertEqual(data['deleted_id'], created_id)
 
     # POST /provider -- Add a new provider to DB 
@@ -53,18 +53,18 @@ class ProviderTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['created_id'])
-        self.assertTrue(data['provider'])
-        self.assertTrue(isinstance(data['provider'], dict))
+        self.assertIsNotNone(data['created_id'])
+        self.assertIsNotNone(data['provider'])
+        self.assertIsInstance(data['provider'], dict)
 
         # Add a second provider to test database
         res = self.client().post('/providers', json=self.provider)
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['created_id'])
-        self.assertTrue(data['provider'])
-        self.assertTrue(isinstance(data['provider'], dict))
+        self.assertIsNotNone(data['created_id'])
+        self.assertIsNotNone(data['provider'])
+        self.assertIsInstance(data['provider'], dict)
 
     # GET /providers -- Get a list of all providers
     def test_200_get_all_providers(self):
@@ -72,8 +72,8 @@ class ProviderTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['providers'])
-        self.assertTrue(isinstance(data['providers'], list))
+        self.assertIsNotNone(data['providers'])
+        self.assertIsInstance(data['providers'], list)
 
     # GET /providers/<int: provider_id> -- Get provider details
     def test_200_get_provider(self):
@@ -81,8 +81,8 @@ class ProviderTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['provider'])
-        self.assertTrue(isinstance(data['provider'], dict))
+        self.assertIsNotNone(data['provider'])
+        self.assertIsInstance(data['provider'], dict)
 
     # PATCH /providers/<int: provider_id> -- Edit & update a provider
     def test_200_patch_provider(self):
@@ -92,9 +92,9 @@ class ProviderTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['provider'])
+        self.assertIsNotNone(data['provider'])
         self.assertEqual(data['updated_id'], id)
-        self.assertTrue(isinstance(data['provider'], dict))
+        self.assertIsInstance(data['provider'], dict)
         for key in self.patch_provider:
             self.assertEqual(data['provider'][key], self.patch_provider[key])
 

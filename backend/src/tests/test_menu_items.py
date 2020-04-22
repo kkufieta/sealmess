@@ -33,9 +33,9 @@ class MenuItemTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['created_id'])
-        self.assertTrue(data['menu_item'])
-        self.assertTrue(isinstance(data['menu_item'], dict))
+        self.assertIsNotNone(data['created_id'])
+        self.assertIsNotNone(data['menu_item'])
+        self.assertIsInstance(data['menu_item'], dict)
 
         # Save id of created question so we can delete it
         created_id = data['created_id']
@@ -48,7 +48,7 @@ class MenuItemTestCase(BaseTestCase):
         menu_item = MenuItem.query.filter(MenuItem.id == created_id).one_or_none()
 
         self.check_200(res, data)
-        self.assertEqual(menu_item, None)
+        self.assertIsNone(menu_item)
         self.assertEqual(data['deleted_id'], created_id)
 
     # POST /providers/1/menu -- Add a new menu-item to DB 
@@ -59,9 +59,9 @@ class MenuItemTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['created_id'])
-        self.assertTrue(data['menu_item'])
-        self.assertTrue(isinstance(data['menu_item'], dict))
+        self.assertIsNotNone(data['created_id'])
+        self.assertIsNotNone(data['menu_item'])
+        self.assertIsInstance(data['menu_item'], dict)
 
     # GET /providers/1/menu -- Get the menu of a provider
     def test_200_get_menu(self):
@@ -70,9 +70,9 @@ class MenuItemTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['menu'])
-        self.assertTrue(data['provider_id'])
-        self.assertTrue(isinstance(data['menu'], list))
+        self.assertIsNotNone(data['menu'])
+        self.assertIsNotNone(data['provider_id'])
+        self.assertIsInstance(data['menu'], list)
         self.assertEqual(data['provider_id'], provider_id)
 
     # GET /providers/1/menu/1 -- Get a menu item
@@ -84,12 +84,12 @@ class MenuItemTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['menu_item'])
-        self.assertTrue(data['provider_id'])
-        self.assertTrue(data['menu_item_id'])
+        self.assertIsNotNone(data['menu_item'])
+        self.assertIsNotNone(data['provider_id'])
+        self.assertIsNotNone(data['menu_item_id'])
         self.assertEqual(data['provider_id'], provider_id)
         self.assertEqual(data['menu_item_id'], menu_item_id)
-        self.assertTrue(isinstance(data['menu_item'], dict))
+        self.assertIsInstance(data['menu_item'], dict)
         self.assertEqual(data['menu_item']['provider_id'], provider_id)
 
     # PATCH /providers/<int: provider_id>/menu/<int: menu_item_id> - Edit & update a menu-item
@@ -102,9 +102,9 @@ class MenuItemTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['menu_item'])
-        self.assertTrue(data['menu_item_id'])
-        self.assertTrue(isinstance(data['menu_item'], dict))
+        self.assertIsNotNone(data['menu_item'])
+        self.assertIsNotNone(data['menu_item_id'])
+        self.assertIsInstance(data['menu_item'], dict)
         self.assertEqual(data['menu_item']['provider_id'], provider_id)
         for key in self.patch_menu_item:
             self.assertEqual(data['menu_item'][key], self.patch_menu_item[key])

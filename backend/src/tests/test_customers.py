@@ -26,9 +26,9 @@ class CustomerTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['created_id'])
-        self.assertTrue(data['customer'])
-        self.assertTrue(isinstance(data['customer'], dict))
+        self.assertIsNotNone(data['created_id'])
+        self.assertIsNotNone(data['customer'])
+        self.assertIsInstance(data['customer'], dict)
 
         # Save id of created question so we can delete it
         created_id = data['created_id']
@@ -40,7 +40,7 @@ class CustomerTestCase(BaseTestCase):
         customer = Customer.query.filter(Customer.id == created_id).one_or_none()
 
         self.check_200(res, data)
-        self.assertEqual(customer, None)
+        self.assertIsNone(customer)
         self.assertEqual(data['deleted_id'], created_id)
     
     
@@ -51,9 +51,9 @@ class CustomerTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['created_id'])
-        self.assertTrue(data['customer'])
-        self.assertTrue(isinstance(data['customer'], dict))
+        self.assertIsNotNone(data['created_id'])
+        self.assertIsNotNone(data['customer'])
+        self.assertIsInstance(data['customer'], dict)
 
     # GET /customers/<int: customer_id> -- Get customer details
     def test_200_get_customer(self):
@@ -61,8 +61,8 @@ class CustomerTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['customer'])
-        self.assertTrue(isinstance(data['customer'], dict))
+        self.assertIsNotNone(data['customer'])
+        self.assertIsInstance(data['customer'], dict)
 
     # PATCH /customers/<int: customer_id> -- Edit & update a customer
     def test_200_patch_customer(self):
@@ -71,8 +71,8 @@ class CustomerTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['customer'])
-        self.assertTrue(isinstance(data['customer'], dict))
+        self.assertIsNotNone(data['customer'])
+        self.assertIsInstance(data['customer'], dict)
         self.assertEqual(data['updated_id'], id)
         for key in self.patch_customer:
             self.assertEqual(data['customer'][key], self.patch_customer[key])
