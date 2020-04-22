@@ -531,18 +531,22 @@ class SealMessTestCase(unittest.TestCase):
     # POST /customers/<int: customer_id>/orders -- Add a new order to DB
     # DELETE /customers/<int: customer_id>/orders/<int: order_id> -- Delete an order
     def test_200_create_and_delete_order(self):
-        # Create a question, test if it works properly
-        res = self.client().post('/customers/1/orders', json=self.order)
+        customer_id = self.order['customer_id']
+        res = self.client().post('/customers/' + str(customer_id) + '/orders',
+                                 json=self.order)
         data = json.loads(res.data)
 
         self.check_200(res, data)
         self.assertTrue(data['created_id'])
+        self.assertTrue(data['order'])
 
         # Save id of created question so we can delete it
         created_id = data['created_id']
+        print(created_id)
 
         # Test if deleting a question works properly
-        res = self.client().delete('/customers/1/orders/' + str(created_id))
+        res = self.client().delete('/customers/' + str(customer_id) +
+                                 '/orders/' + str(created_id))
         data = json.loads(res.data)
 
         order = Order.query.filter(Order.id == created_id).one_or_none()
@@ -609,7 +613,7 @@ class SealMessTestCase(unittest.TestCase):
         data = json.loads(res.data)
 
         self.check_405(res, data)
-
+    
     # DELETE /customers/<int: customer_id>/orders/<int: order_id> for invalid id
     def test_404_order_does_not_exist(self):
         # PATCH

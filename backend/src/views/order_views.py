@@ -119,22 +119,28 @@ def get_order(customer_id, order_id):
         'order_id': order_id
     })
 
-# PATCH /customers/<int: customer_id>/order/<int: order_item_id>
-@app.route('/customers/<int:customer_id>/orders/<int:order_id>', methods=['PATCH'])
-# @requires_auth('post:providers-menu')
-# def delete_provider(jwt_payload, provider_id):
-def patch_order_item(customer_id, order_item_id):
-    # post menu item to menu of the provider given by provider_id
-    return jsonify({
-        'success': False
-    })
-
-# DELETE /customers/<int: customer_id>/order/<int: order_item_id>
-@app.route('/customers/<int:customer_id>/orders/<int:order_item_id>', methods=['DELETE'])
-# @requires_auth('post:providers-menu')
-# def delete_provider(jwt_payload, provider_id):
-def delete_order_item(customer_id, order_item_id):
-    # post menu item to menu of the provider given by provider_id
-    return jsonify({
-        'success': False
-    })
+# DELETE /customers/<int:customer_id>/orders/<int:order_id>
+#   deletes corresponding row for <order_id> in orders table
+#   requires the 'delete:order' permission
+@app.route('/customers/<int:customer_id>/orders/<int:order_id>', methods=['DELETE'])
+# @requires_auth('delete:order')
+# def delete_provider(jwt_payload, customer_id, order_id):
+def delete_order_item(customer_id, order_id):
+    if not customer_id or not order_id:
+        abort(400)
+    order = Order.query.filter(Order.id == order_id).one_or_none()
+    if not order:
+        abort(404)
+    customer = Customer.query.filter(Customer.id == customer_id).one_or_none()
+    if not customer:
+        abort(404)
+    if not order.customer_id == customer_id:
+        abort(400)
+    try:
+        order.delete()
+        return jsonify({
+            'success': True,
+            'deleted_id': order_id
+        })
+    except Exception as e:
+        abort(400)
