@@ -7,7 +7,7 @@ from urllib.request import urlopen
 
 AUTH0_DOMAIN = 'dev-9rqh2tib.auth0.com'
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'coffeeshop'
+API_AUDIENCE = 'sealmess'
 
 # AuthError Exception
 '''
@@ -80,8 +80,8 @@ def check_permissions(permission, payload):
         }, 400)
     if permission not in payload['permissions']:
         raise AuthError({
-            'code': 'unauthorized',
-            'description': 'Permission not found.'
+            'code': 'forbidden',
+            'description': 'Permission not found'
         }, 403)
 
 
