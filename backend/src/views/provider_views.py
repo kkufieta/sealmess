@@ -2,6 +2,7 @@ from flask import request
 from ..database import setup_db, db_drop_and_create_all, Customer, Provider, MenuItem, Order
 from .shared import app
 from .errors import *
+from ..auth import *
 
 '''
 Routes: Provider (RBAC Provider)
@@ -18,11 +19,10 @@ Public:
 # POST /providers
 #   Add a new provider to the DB
 #   Creates a new row in the providers table
-#   Requires the 'post:providers' permission
+#   Requires the 'post:provider' permission
 @app.route('/providers', methods=['POST'])
-# @requires_auth('post:providers')
-# def post_providers(jwt_payload)
-def post_providers():
+@requires_auth('post:provider')
+def post_providers(jwt_payload):
     body = request.get_json()
     if not body:
         abort(400)
@@ -87,9 +87,8 @@ def get_provider(provider_id):
 #   updates the corresponding row for <provider_id>
 #   requires the 'patch:provider' permission
 @app.route('/providers/<int:provider_id>', methods=['PATCH'])
-# @requires_auth('patch:provider')
-# def patch_provider(jwt_payload, provider_id):
-def patch_provider(provider_id):
+@requires_auth('patch:provider')
+def patch_provider(jwt_payload, provider_id):
     if not provider_id:
         abort(400)
     body = request.get_json()
@@ -119,9 +118,8 @@ def patch_provider(provider_id):
 #   deletes corresponding row for <provider_id> in providers table
 #   requires the 'delete:provider' permission
 @app.route('/providers/<int:provider_id>', methods=['DELETE'])
-# @requires_auth('delete:provider')
-# def delete_provider(jwt_payload, provider_id):
-def delete_provider(provider_id):
+@requires_auth('delete:provider')
+def delete_provider(jwt_payload, provider_id):
     if not provider_id:
         abort(400)
     provider = Provider.query.filter(Provider.id == provider_id).one_or_none()

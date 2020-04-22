@@ -150,7 +150,6 @@ class CustomerTestCase(BaseTestCase):
                                  headers=self.owner_header,
                                  json=self.customer)
         data = json.loads(res.data)
-        print(data)
         self.check_403(res, data)
 
         res = self.client().post('/customers',

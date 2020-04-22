@@ -64,6 +64,8 @@ class Provider(db.Model):
                 provider.delete()
     '''
     def delete(self):
+        for menu_item in self.menu_items:
+            menu_item.delete()
         db.session.delete(self)
         db.session.commit()
 
