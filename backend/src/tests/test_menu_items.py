@@ -29,6 +29,7 @@ class MenuItemTestCase(BaseTestCase):
         # Create a question, test if it works properly
         provider_id = self.menu_item['provider_id']
         res = self.client().post('/providers/' + str(provider_id) + '/menu',
+                                 headers=self.provider_header,
                                  json=self.menu_item)
         data = json.loads(res.data)
 
@@ -42,7 +43,8 @@ class MenuItemTestCase(BaseTestCase):
 
         # Test if deleting a question works properly
         res = self.client().delete('/providers/' + str(provider_id) +
-                                   '/menu/' + str(created_id))
+                                   '/menu/' + str(created_id),
+                                   headers=self.provider_header)
         data = json.loads(res.data)
 
         menu_item = MenuItem.query.filter(MenuItem.id == created_id).one_or_none()
@@ -55,6 +57,7 @@ class MenuItemTestCase(BaseTestCase):
     def test_200_create_menu_item(self):
         provider_id = self.menu_item['provider_id']
         res = self.client().post('/providers/' + str(provider_id) + '/menu',
+                                 headers=self.provider_header,
                                  json=self.menu_item)
         data = json.loads(res.data)
 
@@ -64,6 +67,7 @@ class MenuItemTestCase(BaseTestCase):
         self.assertIsInstance(data['menu_item'], dict)
 
     # GET /providers/1/menu -- Get the menu of a provider
+    #   Open to public
     def test_200_get_menu(self):
         provider_id = 1
         res = self.client().get('/providers/' + str(provider_id) + '/menu')
@@ -76,6 +80,7 @@ class MenuItemTestCase(BaseTestCase):
         self.assertEqual(data['provider_id'], provider_id)
 
     # GET /providers/1/menu/1 -- Get a menu item
+    #   Open to public
     def test_200_get_menu_item(self):
         provider_id = 1
         menu_item_id = 1
@@ -98,6 +103,7 @@ class MenuItemTestCase(BaseTestCase):
         menu_item_id = 1
         res = self.client().patch('/providers/' + str(provider_id) + 
                                   '/menu/' + str(menu_item_id),
+                                  headers=self.provider_header,
                                   json=self.patch_menu_item)
         data = json.loads(res.data)
 
@@ -115,7 +121,9 @@ class MenuItemTestCase(BaseTestCase):
 
     # POST /providers/<int: provider_id>/menu/<int: menu_item_id>
     def test_405_create_menu_item_not_allowed(self):
-        res = self.client().post('/providers/1/menu/1', json=self.menu_item)
+        res = self.client().post('/providers/1/menu/1',
+                                 headers=self.provider_header,
+                                 json=self.menu_item)
         data = json.loads(res.data)
 
         self.check_405(res, data)
@@ -124,28 +132,95 @@ class MenuItemTestCase(BaseTestCase):
     # DELETE /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
     def test_404_menu_item_does_not_exist(self):
         # PATCH - menu_item id doesn't exist
-        res = self.client().patch('/providers/1/menu/1000', json=self.patch_menu_item)
+        res = self.client().patch('/providers/1/menu/1000',
+                                  headers=self.provider_header,
+                                  json=self.patch_menu_item)
         data = json.loads(res.data)
 
         self.check_404(res, data)
 
         # PATCH - provider id doesn't exist
-        res = self.client().patch('/providers/1000/menu/1', json=self.patch_menu_item)
+        res = self.client().patch('/providers/1000/menu/1',
+                                  headers=self.provider_header,
+                                  json=self.patch_menu_item)
         data = json.loads(res.data)
 
         self.check_404(res, data)
 
         # DELETE - menu_item id doesn't exist
-        res = self.client().delete('/providers/1/menu/1000')
+        res = self.client().delete('/providers/1/menu/1000',
+                                   headers=self.provider_header)
         data = json.loads(res.data)
 
         self.check_404(res, data)
 
         # DELETE - provider id doesn't exist
-        res = self.client().delete('/providers/1000/menu/1')
+        res = self.client().delete('/providers/1000/menu/1',
+                                   headers=self.provider_header)
         data = json.loads(res.data)
 
         self.check_404(res, data)
+
+    # Test POST, GET, PATCH, DELETE when unauthorized
+    def test_401_header_missing(self):
+        # POST
+        provider_id = self.menu_item['provider_id']
+        res = self.client().post('/providers/' + str(provider_id) + '/menu',
+                                 json=self.menu_item)
+        data = json.loads(res.data)
+        self.check_401_header_missing(res, data)
+
+        # DELETE
+        res = self.client().delete('/providers/1/menu/1')
+        data = json.loads(res.data)
+        self.check_401_header_missing(res, data)
+
+        # PATCH
+        res = self.client().patch('/providers/1/menu/1', 
+                                  json=self.patch_menu_item)
+        data = json.loads(res.data)
+        self.check_401_header_missing(res, data)
+
+    # Test POST, GET, PATCH, DELETE when forbidden
+    def test_403_forbidden(self):
+        # POST
+        provider_id = self.menu_item['provider_id']
+        res = self.client().post('/providers/' + str(provider_id) + '/menu',
+                                 headers=self.customer_header,
+                                 json=self.menu_item)
+        data = json.loads(res.data)
+        self.check_403(res, data)
+
+        provider_id = self.menu_item['provider_id']
+        res = self.client().post('/providers/' + str(provider_id) + '/menu',
+                                 headers=self.owner_header,
+                                 json=self.menu_item)
+        data = json.loads(res.data)
+        self.check_403(res, data)
+
+        # DELETE
+        res = self.client().delete('/providers/1/menu/1',
+                                   headers=self.customer_header)
+        data = json.loads(res.data)
+        self.check_403(res, data)
+
+        res = self.client().delete('/providers/1/menu/1',
+                                   headers=self.owner_header)
+        data = json.loads(res.data)
+        self.check_403(res, data)
+
+        # PATCH
+        res = self.client().patch('/providers/1/menu/1',
+                                  headers=self.customer_header
+                                  json=self.patch_menu_item)
+        data = json.loads(res.data)
+        self.check_403(res, data)
+
+        res = self.client().patch('/providers/1/menu/1',
+                                  headers=self.owner_header
+                                  json=self.patch_menu_item)
+        data = json.loads(res.data)
+        self.check_403(res, data)
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
