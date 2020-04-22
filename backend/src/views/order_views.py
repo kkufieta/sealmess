@@ -2,6 +2,7 @@ from flask import request
 from ..database import setup_db, db_drop_and_create_all, Customer, Provider, MenuItem, Order
 from .shared import app
 from .errors import *
+from ..auth import *
 
 '''
 Routes: Order (RBAC Customer)
@@ -15,9 +16,8 @@ Routes: Order (RBAC Customer)
 #   Creates a new row in the orders table
 #   Requires the 'post:order' permission
 @app.route('/customers/<int:customer_id>/orders', methods=['POST'])
-# @requires_auth('post:order')
-# def post_order(jwt_payload, customer_id):
-def post_order(customer_id):
+@requires_auth('post:order')
+def post_order(jwt_payload, customer_id):
     if not customer_id:
         abort(400)
     body = request.get_json()
@@ -51,9 +51,8 @@ def post_order(customer_id):
 #   Add a new menu-item to an existing order with <order_id>
 #   Requires the 'post:order' permission
 @app.route('/orders/<int:order_id>/menu_items', methods=['POST'])
-# @requires_auth('post:order')
-# def add_menu_items_to_order(jwt_payload, order_id):
-def add_menu_items_to_order(order_id):
+@requires_auth('post:order')
+def add_menu_items_to_order(jwt_payload, order_id):
     if not order_id:
         abort(400)
     body = request.get_json()
@@ -81,9 +80,8 @@ def add_menu_items_to_order(order_id):
 # GET /customers/<int:customer_id>/orders
 #   Get the orders of a customer
 @app.route('/customers/<int:customer_id>/orders', methods=['GET'])
-# @requires_auth('get:orders')
-# def get_orders(jwt_payload, customer_id):
-def get_orders(customer_id):
+@requires_auth('get:order')
+def get_orders(jwt_payload, customer_id):
     if not customer_id:
         abort(400)
     try:
@@ -102,9 +100,8 @@ def get_orders(customer_id):
 # GET /customers/<int:customer_id>/order/<int:order_item_id>
 #   Get an order
 @app.route('/customers/<int:customer_id>/orders/<int:order_id>', methods=['GET'])
-# @requires_auth('get:orders')
-# def get_order(jwt_payload, customer_id, order_id):
-def get_order(customer_id, order_id):
+@requires_auth('get:order')
+def get_order(jwt_payload, customer_id, order_id):
     if not customer_id or not order_id:
         abort(400)
     order = Order.query.filter(Order.id == order_id).one_or_none()
@@ -123,9 +120,8 @@ def get_order(customer_id, order_id):
 #   deletes corresponding row for <order_id> in orders table
 #   requires the 'delete:order' permission
 @app.route('/customers/<int:customer_id>/orders/<int:order_id>', methods=['DELETE'])
-# @requires_auth('delete:order')
-# def delete_provider(jwt_payload, customer_id, order_id):
-def delete_order_item(customer_id, order_id):
+@requires_auth('delete:order')
+def delete_order_item(jwt_payload, customer_id, order_id):
     if not customer_id or not order_id:
         abort(400)
     order = Order.query.filter(Order.id == order_id).one_or_none()
