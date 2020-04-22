@@ -211,13 +211,13 @@ class MenuItemTestCase(BaseTestCase):
 
         # PATCH
         res = self.client().patch('/providers/1/menu/1',
-                                  headers=self.customer_header
+                                  headers=self.customer_header,
                                   json=self.patch_menu_item)
         data = json.loads(res.data)
         self.check_403(res, data)
 
         res = self.client().patch('/providers/1/menu/1',
-                                  headers=self.owner_header
+                                  headers=self.owner_header,
                                   json=self.patch_menu_item)
         data = json.loads(res.data)
         self.check_403(res, data)
