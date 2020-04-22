@@ -67,7 +67,7 @@ def add_menu_items_to_order(order_id):
             menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
             if not menu_item:
                 abort(400)
-            order.menu_items.append(menu_item)
+            order.add_menu_item(menu_item)
         order.update()
 
         return jsonify({
