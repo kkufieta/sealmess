@@ -588,9 +588,9 @@ class SealMessTestCase(unittest.TestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        self.assertTrue(data['providers'])
-        self.assertEqual(len(data['providers']), 2)
-        # TODO: check that the list of providers is correct
+        self.assertTrue(data['customer_id'])
+        self.assertTrue(data['orders'])
+        self.assertTrue(isinstance(data['orders'], list))
 
     # GET /customers/<int: customer_id>/orders/<int: order_id> -- Get order details
     def test_200_get_order_details(self):
@@ -598,8 +598,6 @@ class SealMessTestCase(unittest.TestCase):
         data = json.loads(res.data)
 
         self.check_200(res, data)
-        # TODO: check that returned order is correct!
-
 
     # POST /customers/<int: customer_id>/orders/<int: order_id>
     def test_405_create_order_not_allowed(self):

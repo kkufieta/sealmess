@@ -48,7 +48,7 @@ def post_order(customer_id):
         abort(400)
 
 # POST /orders/<int:order_id>/menu_items
-#   Add a new menu-item to an existing order
+#   Add a new menu-item to an existing order with <order_id>
 #   Requires the 'post:order' permission
 @app.route('/orders/<int:order_id>/menu_items', methods=['POST'])
 # @requires_auth('post:order')
@@ -78,29 +78,32 @@ def add_menu_items_to_order(order_id):
     except Exception as e:
         abort(400)
 
-# order = Order(customer_id=customer_id, menu_item_id=menu_item_id)
-# order.insert()
-# order = Order.query.filter(Order.id == order_id).one_or_none()
-# menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
-# if order and menu_item:
-    # order.add_menu_item(menu_item)
-    # order.update()
-
-# GET /customers/<int: customer_id>/order - Get the order of a customer
+# GET /customers/<int:customer_id>/orders
+#   Get the orders of a customer
 @app.route('/customers/<int:customer_id>/orders', methods=['GET'])
-# @requires_auth('post:providers-menu')
-# def delete_provider(jwt_payload, provider_id):
-def get_order(customer_id):
-    # post menu item to menu of the provider given by provider_id
-    return jsonify({
-        'success': False
-    })
+# @requires_auth('get:orders')
+# def get_orders(jwt_payload, customer_id):
+def get_orders(customer_id):
+    if not customer_id:
+        abort(400)
+    try:
+        orders = Order.query.filter(Order.customer_id == customer_id).all()
+        if not orders:
+            abort(404)
+        return jsonify({
+            'success': True,
+            'customer_id': customer_id,
+            'orders': [order.format() for order in orders]
+        })
+    except Exception as e:
+        abort(404)
+        
 
 # GET /customers/<int: customer_id>/order/<int: order_item_id> - Get an order item
 @app.route('/customers/<int:customer_id>/orders/<int:order_id>', methods=['GET'])
 # @requires_auth('post:providers-menu')
 # def delete_provider(jwt_payload, provider_id):
-def get_order_item(customer_id):
+def get_order_item(customer_id, order_id):
     # post menu item to menu of the provider given by provider_id
     return jsonify({
         'success': False
