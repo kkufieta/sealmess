@@ -11,10 +11,7 @@ class BaseTestCase(unittest.TestCase):
         """Define test variables and initialize app."""
         self.app = app
         self.client = self.app.test_client
-        self.database_name = "sealmess_test"
-        self.database_path = "postgres://{}/{}".format(
-            'localhost:5432', self.database_name)
-        setup_db(app, self.database_path)
+        setup_db(app)
 
         '''
         User profiles and headers:

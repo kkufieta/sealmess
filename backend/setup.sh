@@ -1,0 +1,1 @@
+LOCAL_DATABASE_NAME='sealmess'
