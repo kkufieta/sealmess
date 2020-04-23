@@ -1,4 +1,42 @@
-# Backend
+# SealMess - Backend
+
+## Overview over roles, actions, and endpoints
+* Roles: Customer, Provider, Owner (of the website, i.e. me)
+* Actions: 
+  * Customer:
+    * can view, edit, and delete own account. 
+    * can view providers and their menu items, and select menu items as their favorite ones.
+    * can view the list of favorite menu items.
+  * Provider:
+    * can view, edit, and delete own account.
+    * can view and edit own list of menu-items.
+  * Owner:
+    * can view statistics on customers, providers, and menu items: number of customers, number of providers, list of menu items sorted by how popular they are.
+    * can view providers and their menu items.
+    * can delete providers (e.g. in the case of violations)
+* Endpoints:
+  * GET
+    * /customers/<int:customer_id>
+    * /customers/<int:customer_id>/order
+    * /providers
+    * /providers/<int:provider_id>
+    * /statistics
+  * POST
+    * /customers
+    * /customers/<int:customer_id>/order
+    * /providers
+    * /providers/<int:provider_id>/menu
+    * /search
+  * PATCH
+    * /customers/<int:customer_id>
+    * /providers/<int:provider_id>
+    * /providers/<int:provider_id>/menu/<int:menu_item_id>
+  * DELETE
+    * /customers/<int:customer_id>
+    * /customers/<int:customer_id>/order/<int:menu_item_id>
+    * /providers/<int:provider_id>
+    * /providers/<int:provider_id>/menu/<int:menu_item_id>
+
 
 ## Getting started
 ### Installing Dependencies
