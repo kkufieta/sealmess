@@ -1,29 +1,27 @@
-# sealmess - Backend
+# sealmess backend
 
-## Deployment on Heroku
-The app is hosted live on Heroku:
+## Table of Contents
 
-https://sealmess.herokuapp.com/
 
-## Local Development
-### Getting started
+## Live Deployment on Heroku
+The app is hosted live on Heroku: https://sealmess.herokuapp.com/
 
-## Getting started
-### Installing Dependencies
-#### Python 3.7
+## Development Setup
+### Python 3.7
 Follow instructions to install the latest version of python for your platform in the [python docs](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python).
 
-#### Virtual Enviornment
-We recommend working within a virtual environment whenever using Python for projects. This keeps your dependencies for each project separate and organaized. Instructions for setting up a virual enviornment for your platform can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
-
-#### PIP Dependencies
-Once you have your virtual environment setup and running, install dependencies by naviging to the /backend directory and running:
-
+### Virtual Enviornment
+General information on how to set up a virtual envirinment can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
 ```bash
-pip3 install -r requirements.txt
+$ virtualenv --no-site-packages env
+$ source env/bin/activate
 ```
 
-This will install all of the required packages we selected within the `requirements.txt` file.
+### Install Dependencies
+Once you have your virtual environment setup and running, install the dependencies:
+```bash
+$ pip3 install -r requirements.txt
+```
 
 ##### Key Dependencies
 
@@ -58,7 +56,7 @@ python3 manage.py db upgrade --directory src/migrations/
 python3 manage.py db migrate --directory src/migrations/
 ```
 
-### Reset Databse
+### Reset Database
 ```bash
 dropdb sealmess
 createdb sealmess
@@ -66,17 +64,19 @@ flask db upgrade
 ```
 
 ## Running the server
-
 Ensure first that you are working using your created virtual environment,
 and that you are in the `backend` directory.
 
 To run the server, execute:
-
 ```bash
+source env/bin/activate
+source setup.sh
 python3 run.py
 ```
 
-### Running the unittests
+Navigate to Home page [http://localhost:5000](http://localhost:5000)
+
+## Testing
 Ensure first that you are working using your created virtual environment,
 and that you are in the `\backend` directory
 
@@ -88,44 +88,10 @@ psql sealmess_test < src/database/sealmess_test_db.psql
 ```
 
 To run the unittests, execute:
-
 ```bash
-python3 -m unittest src/tests/run_tests.py -v
+source setup_test.sh
+python3 -m unittest run_tests.py -v
 ```
-
-
-  
-  ### Development Setup
-
-First, [install Flask](http://flask.pocoo.org/docs/1.0/installation/#install-flask) if you haven't already.
-
-  ```
-  $ cd ~
-  $ sudo pip3 install Flask
-  ```
-
-To start and run the local development server,
-
-1. Initialize and activate a virtualenv:
-  ```
-  $ cd YOUR_PROJECT_DIRECTORY_PATH/
-  $ virtualenv --no-site-packages env
-  $ source env/bin/activate
-  ```
-
-2. Install the dependencies:
-  ```
-  $ pip install -r requirements.txt
-  ```
-
-3. Run the development server:
-  ```
-  $ export FLASK_APP=myapp
-  $ export FLASK_ENV=development # enables debug mode
-  $ python3 app.py
-  ```
-
-4. Navigate to Home page [http://localhost:5000](http://localhost:5000)
 
 
 ## General Information
@@ -153,8 +119,6 @@ It requires four classes, with one-to-many and many-to-many relationships betwee
 |               | image_link   | image_link           |                         |                                   |  
 
 ### API Architecture
-
-### Testing
 
 ### Third-Party Authentication
 
