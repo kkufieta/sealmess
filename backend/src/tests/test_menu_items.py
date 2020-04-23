@@ -1,6 +1,6 @@
 import unittest
 import json
-from .shared import BaseTestCase
+from .test_base import BaseTestCase
 from ..database import MenuItem
 
 class MenuItemTestCase(BaseTestCase):
