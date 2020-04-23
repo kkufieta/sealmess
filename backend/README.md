@@ -43,6 +43,13 @@ flask db upgrade
 # flask db downgrade
 ```
 
+Alternatively, you can use the `migrate.py` script like this:
+```bash
+python3 manage.py db init --directory src/migrations/
+python3 manage.py db upgrade --directory src/migrations/
+python3 manage.py db migrate --directory src/migrations/
+```
+
 ### Reset Databse
 ```bash
 dropdb sealmess

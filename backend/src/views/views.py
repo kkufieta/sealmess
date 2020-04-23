@@ -12,6 +12,9 @@ def home():
         'message': "Welcome to Sealmess!"
     })
 
+'''
+Can be used to populate the database with data, e.g. for testing.
+'''
 @app.route('/createdata')
 def create_data():
     # Create providers
