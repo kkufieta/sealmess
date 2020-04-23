@@ -132,3 +132,36 @@ curl --request GET \
   curl --request GET \
   --url https://sealmess.herokuapp.com/customers/1 \
   --header 'authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik4wVXdOamxFTjBZMFJFSTFRa1ExT0RZeU56WXdOa1F3UkRZNU1VRkZNalJHTkVZME16RkZSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi05cnFoMnRpYi5hdXRoMC5jb20vIiwic3ViIjoidXd6MHhVbWU0eXVaMHEyRmM5bW5FQkFoTkY1bjNIRHVAY2xpZW50cyIsImF1ZCI6InNlYWxtZXNzIiwiaWF0IjoxNTg3NjY2MTg0LCJleHAiOjE1ODc3NTI1ODQsImF6cCI6InV3ejB4VW1lNHl1WjBxMkZjOW1uRUJBaE5GNW4zSER1Iiwic2NvcGUiOiJkZWxldGU6cHJvdmlkZXIiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6cHJvdmlkZXIiXX0.Up0gkdISLGANS-V5UrjclJ9JB9N8lqxsFlnI4wZsBYA-7StyAEkVYqf8HRaxypYTapKDCp9XpFGH-74cGcYv2AgrQCcoLNFv8FKGzLzJVxfpU-lkbBkFqWKGqLj63xtgJGHafEQVS6zpuvMxlXiS3Er75spEP1Cs-qP3TYxgljxfZBrui3YzOM_TqxzMVX6zd3EnG7LeUqipvZgS0udAPLYmUYKUFP1ng77SfotfBM4qfaX42bGHDFjWCevpxdrRKPEh1TeTESmY3wAJ3Mj81KTn8r92aA06K5uMJG-mbQPrWWUIJA6Xvjrl-ZDxw4bEceK8VffDBV-cSMJfIQCIPw'
+  
+  
+  ### Development Setup
+
+First, [install Flask](http://flask.pocoo.org/docs/1.0/installation/#install-flask) if you haven't already.
+
+  ```
+  $ cd ~
+  $ sudo pip3 install Flask
+  ```
+
+To start and run the local development server,
+
+1. Initialize and activate a virtualenv:
+  ```
+  $ cd YOUR_PROJECT_DIRECTORY_PATH/
+  $ virtualenv --no-site-packages env
+  $ source env/bin/activate
+  ```
+
+2. Install the dependencies:
+  ```
+  $ pip install -r requirements.txt
+  ```
+
+3. Run the development server:
+  ```
+  $ export FLASK_APP=myapp
+  $ export FLASK_ENV=development # enables debug mode
+  $ python3 app.py
+  ```
+
+4. Navigate to Home page [http://localhost:5000](http://localhost:5000)
