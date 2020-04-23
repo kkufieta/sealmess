@@ -1,0 +1,5 @@
+.DS_Store
+*Icon*
+backend/env/*
+__pycache__
+*.pyc
