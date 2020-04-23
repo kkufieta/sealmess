@@ -1,5 +1,25 @@
 # SealMess - Backend
 
+### Classes
+It requires four classes, with one-to-many and many-to-many relationships between them:
+* customers
+* providers
+* meal-items
+* orders
+
+### Tables
+**PK**: Primary Key
+**FK**: Foreign Key
+
+| customers     | providers    | menu_items           | orders                  | order_items *(Association table)* | 
+| ------------- |------------- | ---------------------|-------------------------|-----------------------------------|
+| **id (PK)**   | **id (PK)**  | **id (PK)**          | **id (PK)**             | **order_id (FK)**                 | 
+| first_name    | name         | **provider_id (FK)** | **customer_id (FK)**    | **menu_item_id (FK)**             |
+| last_name     | address      | name                 | status                  |                                   |
+| address       | phone        | description          | created_at              |                                   |
+| phone         | description  | price                |                         |                                   |
+|               | image_link   | image_link           |                         |                                   |  
+
 ## Overview over roles, actions, and endpoints
 * Roles: Customer, Provider, Owner (of the website, i.e. me)
 * Actions: 
