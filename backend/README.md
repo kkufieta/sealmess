@@ -1,62 +1,12 @@
-# SealMess - Backend
+# sealmess - Backend
 
-### Classes
-It requires four classes, with one-to-many and many-to-many relationships between them:
-* customers
-* providers
-* meal-items
-* orders
+## Deployment on Heroku
+The app is hosted live on Heroku:
 
-### Tables
-**PK**: Primary Key
-**FK**: Foreign Key
+https://sealmess.herokuapp.com/
 
-| customers     | providers    | menu_items           | orders                  | order_items *(Association table)* | 
-| ------------- |------------- | ---------------------|-------------------------|-----------------------------------|
-| **id (PK)**   | **id (PK)**  | **id (PK)**          | **id (PK)**             | **order_id (FK)**                 | 
-| first_name    | name         | **provider_id (FK)** | **customer_id (FK)**    | **menu_item_id (FK)**             |
-| last_name     | address      | name                 | status                  |                                   |
-| address       | phone        | description          | created_at              |                                   |
-| phone         | description  | price                |                         |                                   |
-|               | image_link   | image_link           |                         |                                   |  
-
-## Overview over roles, actions, and endpoints
-* Roles: Customer, Provider, Owner (of the website, i.e. me)
-* Actions: 
-  * Customer:
-    * can view, edit, and delete own account. 
-    * can view providers and their menu items, and select menu items as their favorite ones.
-    * can view the list of favorite menu items.
-  * Provider:
-    * can view, edit, and delete own account.
-    * can view and edit own list of menu-items.
-  * Owner:
-    * can view statistics on customers, providers, and menu items: number of customers, number of providers, list of menu items sorted by how popular they are.
-    * can view providers and their menu items.
-    * can delete providers (e.g. in the case of violations)
-* Endpoints:
-  * GET
-    * /customers/<int:customer_id>
-    * /customers/<int:customer_id>/order
-    * /providers
-    * /providers/<int:provider_id>
-    * /statistics
-  * POST
-    * /customers
-    * /customers/<int:customer_id>/order
-    * /providers
-    * /providers/<int:provider_id>/menu
-    * /search
-  * PATCH
-    * /customers/<int:customer_id>
-    * /providers/<int:provider_id>
-    * /providers/<int:provider_id>/menu/<int:menu_item_id>
-  * DELETE
-    * /customers/<int:customer_id>
-    * /customers/<int:customer_id>/order/<int:menu_item_id>
-    * /providers/<int:provider_id>
-    * /providers/<int:provider_id>/menu/<int:menu_item_id>
-
+## Local Development
+### Getting started
 
 ## Getting started
 ### Installing Dependencies
@@ -143,16 +93,7 @@ To run the unittests, execute:
 python3 -m unittest src/tests/run_tests.py -v
 ```
 
-# Customer
-curl --request GET \
-  --url https://sealmess.herokuapp.com/customers/1 \
-  --header 'authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik4wVXdOamxFTjBZMFJFSTFRa1ExT0RZeU56WXdOa1F3UkRZNU1VRkZNalJHTkVZME16RkZSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi05cnFoMnRpYi5hdXRoMC5jb20vIiwic3ViIjoiT3daajVZUXFFN2tSUmhJNmY2S3RqbVdpMGdrMURwVGxAY2xpZW50cyIsImF1ZCI6InNlYWxtZXNzIiwiaWF0IjoxNTg3NjY1NzQyLCJleHAiOjE1ODc3NTIxNDIsImF6cCI6Ik93Wmo1WVFxRTdrUlJoSTZmNkt0am1XaTBnazFEcFRsIiwic2NvcGUiOiJwb3N0OmN1c3RvbWVyIGdldDpjdXN0b21lciBwYXRjaDpjdXN0b21lciBkZWxldGU6Y3VzdG9tZXIgcG9zdDpvcmRlciBnZXQ6b3JkZXIgZGVsZXRlOm9yZGVyIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwicGVybWlzc2lvbnMiOlsicG9zdDpjdXN0b21lciIsImdldDpjdXN0b21lciIsInBhdGNoOmN1c3RvbWVyIiwiZGVsZXRlOmN1c3RvbWVyIiwicG9zdDpvcmRlciIsImdldDpvcmRlciIsImRlbGV0ZTpvcmRlciJdfQ.grv-iwXrAmv6h-XBIN-3ZKyxUd_0nM-p2tnhJ2l1ZM2D1qoA2GQk2oHjzrs7qAHEnBPUq0GC6d89uuzRoMHigbioXumSxvE1ZqeK1-R78n8cvnUJem_Q0tlqoBOKCmljfDc6-1RUPoxen7RpTKr-VkO2iGQ1TEc-7JAQviliyPOffYMbQf8M9RseK5HdwbGdEV1LSwsro8f-vZ9IHte0ts5388MdhjbzTdCTMgEQiieeX8qEaJT5kiTykQL0ntaF4JEIoywTWazU0iT1e2lSnrWsbqgVIwRB4pvoheHhNpx4jFYbFi_UmKO63pvXB0mQAf02aVKRCbcpz_bbyL7R2w'
 
-# Owner
-  curl --request GET \
-  --url https://sealmess.herokuapp.com/customers/1 \
-  --header 'authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik4wVXdOamxFTjBZMFJFSTFRa1ExT0RZeU56WXdOa1F3UkRZNU1VRkZNalJHTkVZME16RkZSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi05cnFoMnRpYi5hdXRoMC5jb20vIiwic3ViIjoidXd6MHhVbWU0eXVaMHEyRmM5bW5FQkFoTkY1bjNIRHVAY2xpZW50cyIsImF1ZCI6InNlYWxtZXNzIiwiaWF0IjoxNTg3NjY2MTg0LCJleHAiOjE1ODc3NTI1ODQsImF6cCI6InV3ejB4VW1lNHl1WjBxMkZjOW1uRUJBaE5GNW4zSER1Iiwic2NvcGUiOiJkZWxldGU6cHJvdmlkZXIiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6cHJvdmlkZXIiXX0.Up0gkdISLGANS-V5UrjclJ9JB9N8lqxsFlnI4wZsBYA-7StyAEkVYqf8HRaxypYTapKDCp9XpFGH-74cGcYv2AgrQCcoLNFv8FKGzLzJVxfpU-lkbBkFqWKGqLj63xtgJGHafEQVS6zpuvMxlXiS3Er75spEP1Cs-qP3TYxgljxfZBrui3YzOM_TqxzMVX6zd3EnG7LeUqipvZgS0udAPLYmUYKUFP1ng77SfotfBM4qfaX42bGHDFjWCevpxdrRKPEh1TeTESmY3wAJ3Mj81KTn8r92aA06K5uMJG-mbQPrWWUIJA6Xvjrl-ZDxw4bEceK8VffDBV-cSMJfIQCIPw'
-  
   
   ### Development Setup
 
@@ -185,3 +126,85 @@ To start and run the local development server,
   ```
 
 4. Navigate to Home page [http://localhost:5000](http://localhost:5000)
+
+
+## General Information
+### Data Modeling
+
+#### Classes
+It requires four classes, with one-to-many and many-to-many relationships between them:
+* customers
+* providers
+* meal-items
+* orders
+
+##### Tables
+
+* **PK**: Primary Key
+* **FK**: Foreign Key
+
+| customers     | providers    | menu_items           | orders                  | order_items *(Association table)* | 
+| ------------- |------------- | ---------------------|-------------------------|-----------------------------------|
+| **id** (PK)   | **id** (PK)  | **id** (PK)          | **id** (PK)             | **order_id** (FK)                 | 
+| first_name    | name         | **provider_id** (FK) | **customer_id** (FK)    | **menu_item_id** (FK)             |
+| last_name     | address      | name                 | status                  |                                   |
+| address       | phone        | description          | created_at              |                                   |
+| phone         | description  | price                |                         |                                   |
+|               | image_link   | image_link           |                         |                                   |  
+
+### API Architecture
+
+### Testing
+
+### Third-Party Authentication
+
+### Overview over roles, actions, and endpoints
+* Roles: Customer, Provider, Owner (of the website, i.e. me)
+* Actions: 
+  * Customer:
+    * can view, edit, and delete own account. 
+    * can view providers and their menu items, and select menu items as their favorite ones.
+    * can view the list of favorite menu items.
+  * Provider:
+    * can view, edit, and delete own account.
+    * can view and edit own list of menu-items.
+  * Owner:
+    * can view statistics on customers, providers, and menu items: number of customers, number of providers, list of menu items sorted by how popular they are.
+    * can view providers and their menu items.
+    * can delete providers (e.g. in the case of violations)
+* Endpoints:
+  * GET
+    * /customers/<int:customer_id>
+    * /customers/<int:customer_id>/order
+    * /providers
+    * /providers/<int:provider_id>
+    * /statistics
+  * POST
+    * /customers
+    * /customers/<int:customer_id>/order
+    * /providers
+    * /providers/<int:provider_id>/menu
+    * /search
+  * PATCH
+    * /customers/<int:customer_id>
+    * /providers/<int:provider_id>
+    * /providers/<int:provider_id>/menu/<int:menu_item_id>
+  * DELETE
+    * /customers/<int:customer_id>
+    * /customers/<int:customer_id>/order/<int:menu_item_id>
+    * /providers/<int:provider_id>
+    * /providers/<int:provider_id>/menu/<int:menu_item_id>
+
+
+
+
+# Customer
+curl --request GET \
+  --url https://sealmess.herokuapp.com/customers/1 \
+  --header 'authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik4wVXdOamxFTjBZMFJFSTFRa1ExT0RZeU56WXdOa1F3UkRZNU1VRkZNalJHTkVZME16RkZSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi05cnFoMnRpYi5hdXRoMC5jb20vIiwic3ViIjoiT3daajVZUXFFN2tSUmhJNmY2S3RqbVdpMGdrMURwVGxAY2xpZW50cyIsImF1ZCI6InNlYWxtZXNzIiwiaWF0IjoxNTg3NjY1NzQyLCJleHAiOjE1ODc3NTIxNDIsImF6cCI6Ik93Wmo1WVFxRTdrUlJoSTZmNkt0am1XaTBnazFEcFRsIiwic2NvcGUiOiJwb3N0OmN1c3RvbWVyIGdldDpjdXN0b21lciBwYXRjaDpjdXN0b21lciBkZWxldGU6Y3VzdG9tZXIgcG9zdDpvcmRlciBnZXQ6b3JkZXIgZGVsZXRlOm9yZGVyIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwicGVybWlzc2lvbnMiOlsicG9zdDpjdXN0b21lciIsImdldDpjdXN0b21lciIsInBhdGNoOmN1c3RvbWVyIiwiZGVsZXRlOmN1c3RvbWVyIiwicG9zdDpvcmRlciIsImdldDpvcmRlciIsImRlbGV0ZTpvcmRlciJdfQ.grv-iwXrAmv6h-XBIN-3ZKyxUd_0nM-p2tnhJ2l1ZM2D1qoA2GQk2oHjzrs7qAHEnBPUq0GC6d89uuzRoMHigbioXumSxvE1ZqeK1-R78n8cvnUJem_Q0tlqoBOKCmljfDc6-1RUPoxen7RpTKr-VkO2iGQ1TEc-7JAQviliyPOffYMbQf8M9RseK5HdwbGdEV1LSwsro8f-vZ9IHte0ts5388MdhjbzTdCTMgEQiieeX8qEaJT5kiTykQL0ntaF4JEIoywTWazU0iT1e2lSnrWsbqgVIwRB4pvoheHhNpx4jFYbFi_UmKO63pvXB0mQAf02aVKRCbcpz_bbyL7R2w'
+
+# Owner
+  curl --request GET \
+  --url https://sealmess.herokuapp.com/customers/1 \
+  --header 'authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik4wVXdOamxFTjBZMFJFSTFRa1ExT0RZeU56WXdOa1F3UkRZNU1VRkZNalJHTkVZME16RkZSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi05cnFoMnRpYi5hdXRoMC5jb20vIiwic3ViIjoidXd6MHhVbWU0eXVaMHEyRmM5bW5FQkFoTkY1bjNIRHVAY2xpZW50cyIsImF1ZCI6InNlYWxtZXNzIiwiaWF0IjoxNTg3NjY2MTg0LCJleHAiOjE1ODc3NTI1ODQsImF6cCI6InV3ejB4VW1lNHl1WjBxMkZjOW1uRUJBaE5GNW4zSER1Iiwic2NvcGUiOiJkZWxldGU6cHJvdmlkZXIiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6cHJvdmlkZXIiXX0.Up0gkdISLGANS-V5UrjclJ9JB9N8lqxsFlnI4wZsBYA-7StyAEkVYqf8HRaxypYTapKDCp9XpFGH-74cGcYv2AgrQCcoLNFv8FKGzLzJVxfpU-lkbBkFqWKGqLj63xtgJGHafEQVS6zpuvMxlXiS3Er75spEP1Cs-qP3TYxgljxfZBrui3YzOM_TqxzMVX6zd3EnG7LeUqipvZgS0udAPLYmUYKUFP1ng77SfotfBM4qfaX42bGHDFjWCevpxdrRKPEh1TeTESmY3wAJ3Mj81KTn8r92aA06K5uMJG-mbQPrWWUIJA6Xvjrl-ZDxw4bEceK8VffDBV-cSMJfIQCIPw'
+  
