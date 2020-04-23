@@ -33,3 +33,4 @@ The tech stack includes:
 * **PostgreSQL**: database
 * **Python3** and **Flask**: server language and server framework
 * **Flask-Migrate**: for creating and running schema migrations
+* **unittest**: For testing the endpoints
