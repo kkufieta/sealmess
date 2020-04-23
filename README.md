@@ -5,6 +5,7 @@ For this project, I chose to implement a simplified meal delivery service inspir
 
 ## Motivation
 I wanted to create a simplified version of Seamless, which would include the following:
+### Roles, RBAC
 * Customers
   * Can sign up, view, edit & delete their own profiles
   * Can view providers and their menus
@@ -17,49 +18,25 @@ I wanted to create a simplified version of Seamless, which would include the fol
 * Owner
   * The owner of the website can delete providers (e.g. in case of violations)
   
-This challenged me to have three different roles with different RBAC:
-* Customer
-* Provider
-* Owner
-
+### Classes
 It requires four classes, with one-to-many and many-to-many relationships between them:
 * customers
 * providers
 * meal-items
 * orders
 
-The classes are as following:
-* customers
-  * **Primary Key:** id
-  * first_name
-  * last_name
-  * address
-  * phone
-* providers
-  * **Primary Key:** id
-  * name
-  * address
-  * phone
-  * description
-  * image_link
-* menu_items
-  * **Primary Key:** id
-  * **Foreign Key:** provider_id
-  * name
-  * description
-  * price
-  * image_link
-* orders
-  * **Primary Key:** id
-  * **Foreign Key:** customer_id
-  * status
-  * created_at
-  
-And one association table:
-* order_items:
-  * **Foreign Key:** order_id
-  * **Foreign Key:** menu_item_id
-  
+### Tables
+**PK**: Primary Key
+**FK**: Foreign Key
+
+| customers     | providers    | menu_items           | orders                  | order_items *(Association table)* | 
+| ------------- |------------- | ---------------------|-------------------------|-----------------------------------|
+| **id (PK)**   | **id (PK)**  | **id (PK)**          | **id (PK)**             | **order_id (FK)**                 | 
+| first_name    | name         | **provider_id (FK)** | **customer_id (FK)**    | **menu_item_id (FK)**             |
+| last_name     | address      | name                 | status                  |                                   |
+| address       | phone        | description          | created_at              |                                   |
+| phone         | description  | price                |                         |                                   |
+|               | image_link   | image_link           |                         |                                   |  
 
 ## Tech Stack
 
