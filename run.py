@@ -1,4 +1,4 @@
-from src.views import views
+from backend.src.views import views
 
 APP = views.app
 
