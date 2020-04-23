@@ -1,5 +1,5 @@
-# SealMess - Meal delivery service
-This is the Capstone Project for the Fullstack Web Developer Nanodegree at Udacity. 
+# sealmess - Meal delivery service
+This is the Capstone Project for the [Fullstack Web Developer Nanodegree](https://www.udacity.com/course/full-stack-web-developer-nanodegree--nd0044) at Udacity. 
 
 For this project, I chose to implement a simplified meal delivery service inspired by Seamless.
 
@@ -33,4 +33,4 @@ The tech stack includes:
 * **PostgreSQL**: database
 * **Python3** and **Flask**: server language and server framework
 * **Flask-Migrate**: for creating and running schema migrations
-* **unittest**: For testing the endpoints
+* **unittest**: Python unittesting framework to test the endpoints
