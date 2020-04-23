@@ -3,11 +3,12 @@ from flask import request, _request_ctx_stack
 from functools import wraps
 from jose import jwt
 from urllib.request import urlopen
+import os
 
 
-AUTH0_DOMAIN = 'dev-9rqh2tib.auth0.com'
-ALGORITHMS = ['RS256']
-API_AUDIENCE = 'sealmess'
+AUTH0_DOMAIN = os.environ.get('DOMAIN')
+ALGORITHMS = [os.environ.get('ALGORITHM')]
+API_AUDIENCE = os.environ.get('AUDIENCE')
 
 # AuthError Exception
 '''
