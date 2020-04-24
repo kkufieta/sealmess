@@ -1,6 +1,22 @@
-# sealmess backend
+# Sealmess Backend
 
 ## Table of Contents
+* [Live Deployment on Heroku](https://github.com/kkufieta/sealmess/blob/master/backend/README.md#live-deployment-on-heroku)
+* [Development Setup](https://github.com/kkufieta/sealmess/blob/master/backend/README.md#development-setup)
+  * [Python 3.7](https://github.com/kkufieta/sealmess/blob/master/backend/README.md#python-37)
+  * [Virtual Environment](https://github.com/kkufieta/sealmess/blob/master/backend/README.md#virtual-enviornment)
+  * [Install Dependencies](https://github.com/kkufieta/sealmess/blob/master/backend/README.md#install-dependencies)
+* [Database Setup](https://github.com/kkufieta/sealmess/blob/master/backend/README.md#database-setup)
+  * [Migrations](https://github.com/kkufieta/sealmess/blob/master/backend/README.md#migrations)
+  * [Reset Database](https://github.com/kkufieta/sealmess/blob/master/backend/README.md#reset-database)
+* [Testing](https://github.com/kkufieta/sealmess/blob/master/backend/README.md#testing)
+* [API Architecture](https://github.com/kkufieta/sealmess/blob/master/backend/README.md#api-architecture)
+  * [General Information](https://github.com/kkufieta/sealmess/blob/master/backend/README.md#general-information)
+  * [Getting Started](https://github.com/kkufieta/sealmess/blob/master/backend/README.md#getting-started)
+  * [Third-Party Authentication](https://github.com/kkufieta/sealmess/blob/master/backend/README.md#third-party-authentication)
+  * [Endpoints](https://github.com/kkufieta/sealmess/blob/master/backend/README.md#endpoints)
+    * [Overview](https://github.com/kkufieta/sealmess/blob/master/backend/README.md#overview)
+    * [Detailed Information and Examples](https://github.com/kkufieta/sealmess/blob/master/backend/README.md#detailed-information-and-examples)
 
 
 ## Live Deployment on Heroku
@@ -159,7 +175,7 @@ curl --request GET \
 ```
 
 ## Endpoints
-### Overview of the relative endpoints
+### Overview
   * GET
     * /
     * /createdata
@@ -186,7 +202,7 @@ curl --request GET \
     * /providers/{int:provider_id}
     * /providers/{int:provider_id}/menu/{int:menu_item_id}
 
-### Detailed Information and Example Usage
+### Detailed Information and Examples
 #### GET /
 * General:
   * Welcome Homepage, and a sanity check to see if the app runs.
