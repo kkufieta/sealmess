@@ -13,7 +13,7 @@ Follow instructions to install the latest version of python for your platform in
 ### Virtual Enviornment
 General information on how to set up a virtual envirinment can be found in the [python docs](https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/).
 ```bash
-$ virtualenv --no-site-packages env
+$ python3 -m venv env
 $ source env/bin/activate
 ```
 
@@ -36,31 +36,31 @@ $ pip3 install -r requirements.txt
 You have to create the database before running the server.
 
 ```bash
-createdb sealmess
+$ createdb sealmess
 ```
 
 ### Migrations
 ```bash
-cd src/
-export FLASK_APP=views/views.py
+$ cd src/
+$ export FLASK_APP=views/views.py
 # flask db init
-flask db migrate
-flask db upgrade
-# flask db downgrade
+$ flask db migrate
+$ flask db upgrade
+$ # flask db downgrade
 ```
 
 Alternatively, you can use the `migrate.py` script like this:
 ```bash
-python3 manage.py db init --directory src/migrations/
-python3 manage.py db upgrade --directory src/migrations/
-python3 manage.py db migrate --directory src/migrations/
+$ python3 manage.py db init --directory src/migrations/
+$ python3 manage.py db upgrade --directory src/migrations/
+$ python3 manage.py db migrate --directory src/migrations/
 ```
 
 ### Reset Database
 ```bash
-dropdb sealmess
-createdb sealmess
-flask db upgrade
+$ dropdb sealmess
+$ createdb sealmess
+$ flask db upgrade
 ```
 
 ## Running the server
@@ -69,9 +69,9 @@ and that you are in the `backend` directory.
 
 To run the server, execute:
 ```bash
-source env/bin/activate
-source setup.sh
-python3 run.py
+$ source env/bin/activate
+$ source setup.sh
+$ python3 run.py
 ```
 
 Navigate to Home page [http://localhost:5000](http://localhost:5000)
@@ -82,15 +82,15 @@ and that you are in the `\backend` directory
 
 Prepare the test database:
 ```bash
-dropdb sealmess_test
-createdb sealmess_test
-psql sealmess_test < src/database/sealmess_test_db.psql
+$ dropdb sealmess_test
+$ createdb sealmess_test
+$ psql sealmess_test < src/database/sealmess_test_db.psql
 ```
 
 To run the unittests, execute:
 ```bash
-source setup_test.sh
-python3 -m unittest run_tests.py -v
+$ source setup_test.sh
+$ python3 -m unittest run_tests.py -v
 ```
 
 
