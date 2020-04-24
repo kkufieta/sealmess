@@ -15,6 +15,8 @@ API_AUDIENCE = os.environ.get('AUDIENCE')
 AuthError Exception
 A standardized way to communicate auth failure modes
 '''
+
+
 class AuthError(Exception):
     def __init__(self, error, status_code):
         self.error = error
@@ -30,6 +32,8 @@ Extract the JWT token from the auth header.
         raises an AuthError if the header is malformed
     return the token part of the header
 '''
+
+
 def get_token_auth_header():
     """
     Obtains the access token from the authorization header.
@@ -73,6 +77,8 @@ Check if necessary permissions are allowed.
     raises an AuthError if the requested permission string is not in the payload permissions array
     returns true otherwise
 '''
+
+
 def check_permissions(permission, payload):
     if 'permissions' not in payload:
         raise AuthError({
@@ -97,6 +103,8 @@ Verify that the access token is valid and decode JWT
     returns the decoded payload
     !!NOTE urlopen has a common certificate error described here: https://stackoverflow.com/questions/50236117/scraping-ssl-certificate-verify-failed-error-for-http-en-wikipedia-org
 '''
+
+
 def verify_decode_jwt(token):
     '''
     Determines if the Access Token is valid
@@ -164,6 +172,8 @@ def verify_decode_jwt(token):
     uses the check_permissions method to validate claims and check the requested permission
     retur the decorator which passes the decoded payload to the decorated method
 '''
+
+
 def requires_auth(permission=''):
     def requires_auth_decorator(f):
         @wraps(f)

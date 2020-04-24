@@ -3,6 +3,7 @@ import json
 from .test_base import BaseTestCase
 from ..database import Order
 
+
 class OrderTestCase(BaseTestCase):
     '''
     Tests: Order (RBAC Customer)
@@ -18,7 +19,9 @@ class OrderTestCase(BaseTestCase):
         - DELETE /customers/<int: customer_id>/order/<int: order_id> for invalid id
     '''
     # POST /customers/<int: customer_id>/orders -- Add a new order to DB
-    # DELETE /customers/<int: customer_id>/orders/<int: order_id> -- Delete an order
+    # DELETE /customers/<int: customer_id>/orders/<int: order_id> -- Delete an
+    # order
+
     def test_200_create_and_delete_order(self):
         customer_id = self.order['customer_id']
         res = self.client().post('/customers/' + str(customer_id) + '/orders',
@@ -35,8 +38,8 @@ class OrderTestCase(BaseTestCase):
 
         # Test if deleting a question works properly
         res = self.client().delete('/customers/' + str(customer_id) +
-                                 '/orders/' + str(created_id),
-                                 headers=self.customer_header)
+                                   '/orders/' + str(created_id),
+                                   headers=self.customer_header)
         data = json.loads(res.data)
 
         order = Order.query.filter(Order.id == created_id).one_or_none()
@@ -79,7 +82,8 @@ class OrderTestCase(BaseTestCase):
         self.assertIsNotNone(data['order_id'])
         self.assertIsNotNone(data['order'])
 
-    # GET /customers/<int: customer_id>/orders -- Get all orders from a customer
+    # GET /customers/<int: customer_id>/orders -- Get all orders from a
+    # customer
     def test_200_get_all_orders(self):
         res = self.client().get('/customers/1/orders',
                                 headers=self.customer_header)
@@ -90,7 +94,8 @@ class OrderTestCase(BaseTestCase):
         self.assertIsNotNone(data['orders'])
         self.assertIsInstance(data['orders'], list)
 
-    # GET /customers/<int: customer_id>/orders/<int: order_id> -- Get order details
+    # GET /customers/<int: customer_id>/orders/<int: order_id> -- Get order
+    # details
     def test_200_get_order(self):
         res = self.client().get('/customers/1/orders/1',
                                 headers=self.customer_header)
@@ -110,8 +115,9 @@ class OrderTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_405(res, data)
-    
-    # DELETE /customers/<int: customer_id>/orders/<int: order_id> for invalid id
+
+    # DELETE /customers/<int: customer_id>/orders/<int: order_id> for invalid
+    # id
     def test_404_order_does_not_exist(self):
         # PATCH
         res = self.client().delete('/customers/1/orders/1000',
@@ -175,12 +181,12 @@ class OrderTestCase(BaseTestCase):
 
         # DELETE
         res = self.client().delete('/customers/1/orders/1',
-                                    headers=self.owner_header)
+                                   headers=self.owner_header)
         data = json.loads(res.data)
         self.check_403(res, data)
 
         res = self.client().delete('/customers/1/orders/1',
-                                    headers=self.provider_header)
+                                   headers=self.provider_header)
         data = json.loads(res.data)
         self.check_403(res, data)
 
@@ -218,7 +224,7 @@ class OrderTestCase(BaseTestCase):
                                 headers=self.provider_header)
         data = json.loads(res.data)
         self.check_403(res, data)
-    
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

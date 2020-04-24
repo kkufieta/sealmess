@@ -18,6 +18,7 @@ def auth_error(error):
         'message': message['code'] + ': ' + message['description']
     }), status_code
 
+
 '''
 401 error handler: unauthorized
     Although the HTTP standard specifies "unauthorized",
@@ -32,6 +33,7 @@ def unauthorized(error):
         'error': 401,
         'message': 'unauthorized'
     }), 401
+
 
 '''
 403 error handler: forbidden
@@ -48,8 +50,9 @@ def forbidden(error):
         'message': 'forbidden'
     }), 403
 
+
 # ==================================
-# Other, general HTTP error handlers 
+# Other, general HTTP error handlers
 # ==================================
 '''
 400 error handler: bad request
@@ -62,6 +65,7 @@ def bad_request(error):
         'error': 400,
         'message': 'bad request'
     }), 400
+
 
 '''
 404 error handler: not found

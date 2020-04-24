@@ -4,14 +4,25 @@ import json
 '''
 Association table for Order, connecting orders and menu_items
 '''
-order_items = db.Table('order_items',
-    db.Column('order_id', db.Integer, db.ForeignKey('orders.id'), primary_key=True),
-    db.Column('menu_item_id', db.Integer, db.ForeignKey('menu_items.id'), primary_key=True),
+order_items = db.Table(
+    'order_items',
+    db.Column(
+        'order_id',
+        db.Integer,
+        db.ForeignKey('orders.id'),
+        primary_key=True),
+    db.Column(
+        'menu_item_id',
+        db.Integer,
+        db.ForeignKey('menu_items.id'),
+        primary_key=True),
 )
-    
+
 '''
 Order, extends the base SQLAlchemy Model
 '''
+
+
 class Order(db.Model):
     __tablename__ = 'orders'
 
@@ -29,7 +40,7 @@ class Order(db.Model):
 
     menu_items = db.relationship('MenuItem', secondary=order_items,
                                  backref=db.backref('orders', lazy=True))
-        
+
     def __init__(self, customer_id, status, menu_items=[]):
         self.customer_id = customer_id
         self.status = status
@@ -44,6 +55,7 @@ class Order(db.Model):
                           menu_items=[menu_item_1, menu_item_2, ...])
             order.insert()
     '''
+
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -58,6 +70,7 @@ class Order(db.Model):
                 order.add_menu_item(menu_item)
                 order.update()
     '''
+
     def add_menu_item(self, menu_item):
         self.menu_items.append(menu_item)
 
@@ -70,6 +83,7 @@ class Order(db.Model):
                 order.empty_order()
                 order.update()
     '''
+
     def empty_order(self):
         self.menu_items = []
 
@@ -83,6 +97,7 @@ class Order(db.Model):
                 order.status = 'ready'
                 order.update()
     '''
+
     def update(self):
         db.session.commit()
 
@@ -95,6 +110,7 @@ class Order(db.Model):
             if order:
                 order.delete()
     '''
+
     def delete(self):
         db.session.delete(self)
         db.session.commit()
@@ -106,6 +122,7 @@ class Order(db.Model):
         EXAMPLE
             print(order.format())
     '''
+
     def format(self):
         return {
             'id': self.id,

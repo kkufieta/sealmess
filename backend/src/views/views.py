@@ -12,6 +12,7 @@ def home():
         'message': "Welcome to Sealmess!"
     })
 
+
 '''
 Can be used to populate the database with data, e.g. for testing.
 '''
@@ -107,10 +108,13 @@ def create_data():
          'phone': 'bbb-bbb-bbbb'}
     ]
     for c in customers:
-        customer = Customer(first_name=c['first_name'], last_name=c['last_name'],
-                            address=c['address'], phone=c['phone'])
+        customer = Customer(
+            first_name=c['first_name'],
+            last_name=c['last_name'],
+            address=c['address'],
+            phone=c['phone'])
         customer.insert()
-    
+
     # Create orders
     orders = [
         {'customer_id': 1,
@@ -132,7 +136,8 @@ def create_data():
     for o in orders:
         menu_items = []
         for menu_item_id in o['menu_items']:
-            menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
+            menu_item = MenuItem.query.filter(
+                MenuItem.id == menu_item_id).one_or_none()
             if not menu_item:
                 abort(400)
             menu_items.append(menu_item)

@@ -11,7 +11,7 @@ Routes: Customer (RBAC: Customer)
     - PATCH /customers/<int: customer_id>
     - DELETE /customers/<int: customer_id>
 '''
-# POST /customers 
+# POST /customers
 #   Add a new customer to the DB
 #   Creates a new row in the customers table
 #   Requires the 'post:customer' permission
@@ -28,9 +28,9 @@ def post_customer(jwt_payload):
         abort(422)
     try:
         first_name = body['first_name']
-        last_name = body['last_name'] 
+        last_name = body['last_name']
         address = body['address']
-        phone = body['phone'] 
+        phone = body['phone']
         # create customer, return success, customer, and created_id
         customer = Customer(first_name=first_name,
                             last_name=last_name,
@@ -85,7 +85,7 @@ def patch_customer(jwt_payload, customer_id):
             if key in body:
                 setattr(customer, key, body[key])
         customer.update()
-        
+
         return jsonify({
             'success': True,
             'updated_id': customer_id,

@@ -7,16 +7,16 @@ import json
 # provider_access_token = os.environ.get('PROVIDER_ACCESS_TOKEN')
 # owner_access_token = os.environ.get('OWNER_ACCESS_TOKEN')
 
-# --- 
+# ---
 #   Attempted to grab access tokens automatically but
 #   is out of scope for now.
-# --- 
+# ---
 domain = os.environ.get('DOMAIN')
 audience = os.environ.get('AUDIENCE')
 
 payload = "{{\"client_id\":\"{}\",\"client_secret\":\"{}\",\"audience\":\"{}\",\"grant_type\":\"client_credentials\"}}"
 
-headers = { 'content-type': "application/json" }
+headers = {'content-type': "application/json"}
 
 # Get the customer bearer token
 customer_client_id = os.environ.get('CUSTOMER_CLIENT_ID')
@@ -68,17 +68,14 @@ customer_header = {"Authorization": "Bearer {}".format(customer_access_token)}
 provider_header = {"Authorization": "Bearer {}".format(provider_access_token)}
 owner_header = {"Authorization": "Bearer {}".format(owner_access_token)}
 
-if __name__ == "__main__":
+if __name__ == '__main__':
+    print('This prints out Access Tokens for: Customer, Provider, and Owner.')
+    print('It is ready to copy-paste such that you can load them' +
+          'into environment variables.')
     print('')
-    print("--- Customer Access Token ---")
     print('')
-    print(customer_access_token)
+    print('CUSTOMER_ACCESS_TOKEN="' + customer_access_token + '"')
+    print('PROVIDER_ACCESS_TOKEN="' + provider_access_token + '"')
+    print('OWNER_ACCESS_TOKEN="' + owner_access_token + '"')
     print('')
-    print("--- Provider Access Token ---")
-    print('')
-    print(provider_access_token)
-    print('')
-    print("--- Owner Access Token ---")
-    print('')
-    print(owner_access_token)
     print('')

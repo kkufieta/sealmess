@@ -4,6 +4,7 @@ from ..views import app
 from ..database import setup_db
 from .config import customer_header, provider_header, owner_header
 
+
 class BaseTestCase(unittest.TestCase):
     """This class represents the sealmess test case"""
 
@@ -56,8 +57,7 @@ class BaseTestCase(unittest.TestCase):
             'name': 'margarita pizza',
             'description': 'delicious',
             'price': 10.10,
-            'image_link': "https://media.giphy.com/media/4ayiIWaq2VULC/giphy.gif"
-        }
+            'image_link': "https://media.giphy.com/media/4ayiIWaq2VULC/giphy.gif"}
 
         self.patch_menu_item = {
             'name': "Pepperoni pizza",
@@ -101,8 +101,9 @@ class BaseTestCase(unittest.TestCase):
     def check_401_header_missing(self, res, data):
         self.assertEqual(res.status_code, 401)
         self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'],
-                         'authorization_header_missing: Authorization header is expected')
+        self.assertEqual(
+            data['message'],
+            'authorization_header_missing: Authorization header is expected')
 
     def check_403(self, res, data):
         self.assertEqual(res.status_code, 403)
@@ -128,33 +129,6 @@ class BaseTestCase(unittest.TestCase):
         self.assertEqual(res.status_code, 500)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'internal server error')
-
-    '''	
-        def test_create_new_actor_casting_assistant(self):	
-            res = self.client().post('/actors',	
-                                    headers={"Authorization": "Bearer {}".format(self.casting_assistant)},	
-                                    json=self.new_actor)	
-            data = json.loads(res.data)	
-            self.assertEqual(res.status_code, 401)	
-            self.assertEqual(data['message'], {'code': 'unauthorized', 'description':'Permission not found.'})	
-        def test_create_new_movies_executive_producer(self):	
-            res = self.client().post('/movies',	
-                                    headers={"Authorization": "Bearer {}".format(self.executive_producer)},	
-                                    json=self.movies)	
-            data = json.loads(res.data)	
-            self.assertEqual(res.status_code, 200)	
-            self.assertEqual(data['success'], True)	
-        def test_create_new_movies_casting_assistant(self):	
-            res = self.client().post('/movies',	
-                                    headers={"Authorization": "Bearer {}".format(self.casting_assistant)},	
-                                    json=self.movies)	
-            data = json.loads(res.data)	
-            self.assertEqual(res.status_code, 401)	
-            self.assertEqual(data['message'], {'code': 'unauthorized', 'description':'Permission not found.'})	
-    '''
-        
-
-
 # Make the tests conveniently executable
 if __name__ == "__main__":
     unittest.main()

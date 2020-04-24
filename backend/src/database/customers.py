@@ -1,9 +1,11 @@
 from .shared import db
 import json
-    
+
 '''
 Customer, extends the base SQLAlchemy Model
 '''
+
+
 class Customer(db.Model):
     __tablename__ = 'customers'
 
@@ -18,7 +20,7 @@ class Customer(db.Model):
 
     # Child table: Orders
     orders = db.relationship('Order', backref='customers', lazy=True)
-        
+
     def __init__(self, first_name, last_name, address, phone):
         self.first_name = first_name
         self.last_name = last_name
@@ -34,6 +36,7 @@ class Customer(db.Model):
                                 address=address, phone=phone)
             customer.insert()
     '''
+
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -48,6 +51,7 @@ class Customer(db.Model):
                 customer.first_name = 'Kat'
                 customer.update()
     '''
+
     def update(self):
         db.session.commit()
 
@@ -60,6 +64,7 @@ class Customer(db.Model):
             if customer:
                 customer.delete()
     '''
+
     def delete(self):
         db.session.delete(self)
         db.session.commit()
@@ -72,6 +77,7 @@ class Customer(db.Model):
             customer = Customer.query.filter(Customer.id == customer_id).one_or_none()
             print(customer.format())
     '''
+
     def format(self):
         return {
             'id': self.id,

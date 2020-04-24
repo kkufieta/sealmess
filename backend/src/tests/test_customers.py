@@ -3,6 +3,7 @@ import json
 from .test_base import BaseTestCase
 from ..database import Customer
 
+
 class CustomerTestCase(BaseTestCase):
     '''
     Tests: Customer (RBAC Customer)
@@ -18,8 +19,9 @@ class CustomerTestCase(BaseTestCase):
         - PATCH /customers/<int: customer_id> with invalid id
         - DELETE /customers/<int: customer_id> with invalid id
     '''
-    # POST /customers -- Add a new customer to DB 
+    # POST /customers -- Add a new customer to DB
     # DELETE /customers/<int: customer_id> -- Delete a customer
+
     def test_200_create_and_delete_customer(self):
         # Create a customer, test if it works properly
         res = self.client().post('/customers',
@@ -40,14 +42,15 @@ class CustomerTestCase(BaseTestCase):
                                    headers=self.customer_header)
         data = json.loads(res.data)
 
-        customer = Customer.query.filter(Customer.id == created_id).one_or_none()
+        customer = Customer.query.filter(
+            Customer.id == created_id).one_or_none()
 
         self.check_200(res, data)
         self.assertIsNone(customer)
         self.assertEqual(data['deleted_id'], created_id)
-    
-    
-    # POST /customers -- Add a new customer to DB 
+
+    # POST /customers -- Add a new customer to DB
+
     def test_200_create_customer(self):
         # Create a question, test if it works properly
         res = self.client().post('/customers',
@@ -98,10 +101,10 @@ class CustomerTestCase(BaseTestCase):
         data = json.loads(res.data)
 
         self.check_405(res, data)
-        
 
     # PATCH /customers/<int: customer_id> with invalid id
     # DELETE /customers/<int: customer_id> with invalid id
+
     def test_404_customer_does_not_exist(self):
         # PATCH
         res = self.client().patch('/customers/1000',
@@ -192,6 +195,7 @@ class CustomerTestCase(BaseTestCase):
                                   json=self.patch_customer)
         data = json.loads(res.data)
         self.check_403(res, data)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

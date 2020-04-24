@@ -3,6 +3,7 @@ import json
 from .test_base import BaseTestCase
 from ..database import MenuItem
 
+
 class MenuItemTestCase(BaseTestCase):
     '''
     Tests: MenuItem (RBAC Provider)
@@ -11,7 +12,7 @@ class MenuItemTestCase(BaseTestCase):
 
     RBAC Provider, Customer, Owner:
         - DELETE /providers/<int: provider_id>/menu/<int: menu_item_id>
-        
+
     Public:
         - GET /providers/<int: provider_id>/menu
         - GET /providers/<int: provider_id>/menu/<int: menu_item_id>
@@ -21,10 +22,12 @@ class MenuItemTestCase(BaseTestCase):
             - POST /providers/<int: provider_id>/menu/<int: menu_item_id>
             - PATCH /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
             - DELETE /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
-        
+
     '''
     # POST /providers/<int: provider_id>/menu -- Add a new menu-item to DB
-    # DELETE /providers/<int: provider_id>/menu/<int: menu_item_id> - Delete a menu-item
+    # DELETE /providers/<int: provider_id>/menu/<int: menu_item_id> - Delete a
+    # menu-item
+
     def test_200_create_and_delete_menu_item(self):
         # Create a question, test if it works properly
         provider_id = self.menu_item['provider_id']
@@ -47,13 +50,14 @@ class MenuItemTestCase(BaseTestCase):
                                    headers=self.provider_header)
         data = json.loads(res.data)
 
-        menu_item = MenuItem.query.filter(MenuItem.id == created_id).one_or_none()
+        menu_item = MenuItem.query.filter(
+            MenuItem.id == created_id).one_or_none()
 
         self.check_200(res, data)
         self.assertIsNone(menu_item)
         self.assertEqual(data['deleted_id'], created_id)
 
-    # POST /providers/1/menu -- Add a new menu-item to DB 
+    # POST /providers/1/menu -- Add a new menu-item to DB
     def test_200_create_menu_item(self):
         provider_id = self.menu_item['provider_id']
         res = self.client().post('/providers/' + str(provider_id) + '/menu',
@@ -84,7 +88,7 @@ class MenuItemTestCase(BaseTestCase):
     def test_200_get_menu_item(self):
         provider_id = 1
         menu_item_id = 1
-        res = self.client().get('/providers/' + str(provider_id) + 
+        res = self.client().get('/providers/' + str(provider_id) +
                                 '/menu/' + str(menu_item_id))
         data = json.loads(res.data)
 
@@ -97,11 +101,12 @@ class MenuItemTestCase(BaseTestCase):
         self.assertIsInstance(data['menu_item'], dict)
         self.assertEqual(data['menu_item']['provider_id'], provider_id)
 
-    # PATCH /providers/<int: provider_id>/menu/<int: menu_item_id> - Edit & update a menu-item
+    # PATCH /providers/<int: provider_id>/menu/<int: menu_item_id> - Edit &
+    # update a menu-item
     def test_200_patch_menu_item(self):
         provider_id = 1
         menu_item_id = 1
-        res = self.client().patch('/providers/' + str(provider_id) + 
+        res = self.client().patch('/providers/' + str(provider_id) +
                                   '/menu/' + str(menu_item_id),
                                   headers=self.provider_header,
                                   json=self.patch_menu_item)
@@ -114,7 +119,7 @@ class MenuItemTestCase(BaseTestCase):
         self.assertEqual(data['menu_item']['provider_id'], provider_id)
         for key in self.patch_menu_item:
             self.assertEqual(data['menu_item'][key], self.patch_menu_item[key])
-    
+
     # TODO: -- invalid actions that should throw an error:
     # All of the above for anyone else except RBAC Customer
         # Test for: public, Provider, Owner
@@ -129,7 +134,8 @@ class MenuItemTestCase(BaseTestCase):
         self.check_405(res, data)
 
     # PATCH /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
-    # DELETE /providers/<int: provider_id>/menu/<int: menu_item_id> for invalid id
+    # DELETE /providers/<int: provider_id>/menu/<int: menu_item_id> for
+    # invalid id
     def test_404_menu_item_does_not_exist(self):
         # PATCH - menu_item id doesn't exist
         res = self.client().patch('/providers/1/menu/1000',
@@ -176,7 +182,7 @@ class MenuItemTestCase(BaseTestCase):
         self.check_401_header_missing(res, data)
 
         # PATCH
-        res = self.client().patch('/providers/1/menu/1', 
+        res = self.client().patch('/providers/1/menu/1',
                                   json=self.patch_menu_item)
         data = json.loads(res.data)
         self.check_401_header_missing(res, data)
@@ -221,6 +227,7 @@ class MenuItemTestCase(BaseTestCase):
                                   json=self.patch_menu_item)
         data = json.loads(res.data)
         self.check_403(res, data)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

@@ -32,11 +32,15 @@ def post_order(jwt_payload, customer_id):
         menu_item_ids = body['menu_item_ids']
         menu_items = []
         for menu_item_id in menu_item_ids:
-            menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
+            menu_item = MenuItem.query.filter(
+                MenuItem.id == menu_item_id).one_or_none()
             if not menu_item:
                 abort(422)
             menu_items.append(menu_item)
-        order = Order(customer_id=customer_id, status=status, menu_items=menu_items)
+        order = Order(
+            customer_id=customer_id,
+            status=status,
+            menu_items=menu_items)
         order.insert()
 
         return jsonify({
@@ -56,14 +60,15 @@ def add_menu_items_to_order(jwt_payload, order_id):
     if not order_id:
         abort(400)
     body = request.get_json()
-    if not body or not 'menu_item_ids' in body:
+    if not body or 'menu_item_ids' not in body:
         abort(400)
     order = Order.query.filter(Order.id == order_id).one_or_none()
     if not order:
         abort(404)
     try:
         for menu_item_id in body['menu_item_ids']:
-            menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
+            menu_item = MenuItem.query.filter(
+                MenuItem.id == menu_item_id).one_or_none()
             if not menu_item:
                 abort(400)
             order.add_menu_item(menu_item)
@@ -95,11 +100,13 @@ def get_orders(jwt_payload, customer_id):
         })
     except Exception as e:
         abort(404)
-        
+
 
 # GET /customers/<int:customer_id>/order/<int:order_item_id>
 #   Get an order
-@app.route('/customers/<int:customer_id>/orders/<int:order_id>', methods=['GET'])
+@app.route(
+    '/customers/<int:customer_id>/orders/<int:order_id>',
+    methods=['GET'])
 @requires_auth('get:order')
 def get_order(jwt_payload, customer_id, order_id):
     if not customer_id or not order_id:
@@ -119,7 +126,11 @@ def get_order(jwt_payload, customer_id, order_id):
 # DELETE /customers/<int:customer_id>/orders/<int:order_id>
 #   deletes corresponding row for <order_id> in orders table
 #   requires the 'delete:order' permission
-@app.route('/customers/<int:customer_id>/orders/<int:order_id>', methods=['DELETE'])
+
+
+@app.route(
+    '/customers/<int:customer_id>/orders/<int:order_id>',
+    methods=['DELETE'])
 @requires_auth('delete:order')
 def delete_order_item(jwt_payload, customer_id, order_id):
     if not customer_id or not order_id:

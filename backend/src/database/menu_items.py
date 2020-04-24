@@ -1,18 +1,23 @@
 from .shared import db
 import json
-    
+
 '''
 Menu-Item, extends the base SQLAlchemy Model
 '''
+
+
 class MenuItem(db.Model):
     __tablename__ = 'menu_items'
 
     # Primary key
     id = db.Column(db.Integer, primary_key=True)
-    
+
     # Foreign Key
-    provider_id = db.Column(db.Integer, db.ForeignKey('providers.id'), nullable=False)
-    
+    provider_id = db.Column(
+        db.Integer,
+        db.ForeignKey('providers.id'),
+        nullable=False)
+
     # Attributes
     name = db.Column(db.String(120), nullable=False)
     description = db.Column(db.String(120), nullable=False)
@@ -36,6 +41,7 @@ class MenuItem(db.Model):
                                  image_link=image_link)
             menu_item.insert()
     '''
+
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -50,6 +56,7 @@ class MenuItem(db.Model):
                 menu_item.price = 12.99
                 menu_item.update()
     '''
+
     def update(self):
         db.session.commit()
 
@@ -62,6 +69,7 @@ class MenuItem(db.Model):
             if menu_item:
                 menu_item.delete()
     '''
+
     def delete(self):
         db.session.delete(self)
         db.session.commit()
@@ -74,6 +82,7 @@ class MenuItem(db.Model):
             menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
             print(menu_item.format())
     '''
+
     def format(self):
         return {
             'id': self.id,

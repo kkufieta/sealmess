@@ -85,11 +85,14 @@ def get_menu(provider_id):
 # GET /providers/<int:provider_id>/menu/<int:menu_item_id>
 #   Get a menu item out of the menu of a provider
 #   Open to public
-@app.route('/providers/<int:provider_id>/menu/<int:menu_item_id>', methods=['GET'])
+@app.route(
+    '/providers/<int:provider_id>/menu/<int:menu_item_id>',
+    methods=['GET'])
 def get_menu_item(provider_id, menu_item_id):
     if not provider_id or not menu_item_id:
         abort(400)
-    menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
+    menu_item = MenuItem.query.filter(
+        MenuItem.id == menu_item_id).one_or_none()
     if not menu_item:
         abort(404)
     if not menu_item.provider_id == provider_id:
@@ -105,7 +108,11 @@ def get_menu_item(provider_id, menu_item_id):
 #   responds with 404 if <provider_id> or <menu_item_id> are not found
 #   updates the corresponding row for <menu_item_id> in menu_items
 #   requires the 'patch:menu' permission
-@app.route('/providers/<int:provider_id>/menu/<int:menu_item_id>', methods=['PATCH'])
+
+
+@app.route(
+    '/providers/<int:provider_id>/menu/<int:menu_item_id>',
+    methods=['PATCH'])
 @requires_auth('patch:menu')
 def patch_menu_item(jwt_payload, provider_id, menu_item_id):
     if not provider_id or not menu_item_id:
@@ -116,7 +123,8 @@ def patch_menu_item(jwt_payload, provider_id, menu_item_id):
     keys = ['provider_id', 'name', 'description', 'price', 'image_link']
     if not any(key in body for key in keys):
         abort(400)
-    menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
+    menu_item = MenuItem.query.filter(
+        MenuItem.id == menu_item_id).one_or_none()
     if not menu_item:
         abort(404)
     provider = Provider.query.filter(Provider.id == provider_id).one_or_none()
@@ -142,12 +150,17 @@ def patch_menu_item(jwt_payload, provider_id, menu_item_id):
 #   responds with 404 error if <provider_id> or <menu_item_id> is not found
 #   deletes corresponding row for <menu_item_id> in menu_items table
 #   requires the 'delete:menu' permission
-@app.route('/providers/<int:provider_id>/menu/<int:menu_item_id>', methods=['DELETE'])
+
+
+@app.route(
+    '/providers/<int:provider_id>/menu/<int:menu_item_id>',
+    methods=['DELETE'])
 @requires_auth('delete:menu')
 def delete_menu_item(jwt_payload, provider_id, menu_item_id):
     if not provider_id or not menu_item_id:
         abort(400)
-    menu_item = MenuItem.query.filter(MenuItem.id == menu_item_id).one_or_none()
+    menu_item = MenuItem.query.filter(
+        MenuItem.id == menu_item_id).one_or_none()
     if not menu_item:
         abort(404)
     provider = Provider.query.filter(Provider.id == provider_id).one_or_none()

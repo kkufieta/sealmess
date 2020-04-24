@@ -3,6 +3,7 @@ import json
 from .test_base import BaseTestCase
 from ..database import Provider
 
+
 class ProviderTestCase(BaseTestCase):
     '''
     Tests: Provider (RBAC Provider)
@@ -11,7 +12,7 @@ class ProviderTestCase(BaseTestCase):
 
     RBAC Provider, Owner:
         - DELETE /providers/<int: provider_id>
-        
+
     Public:
         - GET /providers
         - GET /providers/<int: provider_id>
@@ -24,6 +25,7 @@ class ProviderTestCase(BaseTestCase):
     '''
     # POST /providers -- Add a new provider to DB
     # DELETE /providers/<int: provider_id> -- Delete a provider
+
     def test_200_create_and_delete_provider(self):
         # Create a question, test if it works properly
         res = self.client().post('/providers',
@@ -44,13 +46,14 @@ class ProviderTestCase(BaseTestCase):
                                    headers=self.provider_header)
         data = json.loads(res.data)
 
-        provider = Provider.query.filter(Provider.id == created_id).one_or_none()
+        provider = Provider.query.filter(
+            Provider.id == created_id).one_or_none()
 
         self.check_200(res, data)
         self.assertIsNone(provider)
         self.assertEqual(data['deleted_id'], created_id)
 
-    # POST /provider -- Add a new provider to DB 
+    # POST /provider -- Add a new provider to DB
     def test_200_create_provider(self):
         res = self.client().post('/providers',
                                  headers=self.provider_header,
@@ -141,6 +144,7 @@ class ProviderTestCase(BaseTestCase):
     '''
     # POST /providers -- Add a new provider to DB (provider RBAC)
     # DELETE /providers/<int: provider_id> -- Delete a provider (owner RBAC)
+
     def test_200_delete_provider_owner(self):
         # Create a question, test if it works properly
         res = self.client().post('/providers',
@@ -161,7 +165,8 @@ class ProviderTestCase(BaseTestCase):
                                    headers=self.owner_header)
         data = json.loads(res.data)
 
-        provider = Provider.query.filter(Provider.id == created_id).one_or_none()
+        provider = Provider.query.filter(
+            Provider.id == created_id).one_or_none()
 
         self.check_200(res, data)
         self.assertIsNone(provider)
@@ -220,6 +225,7 @@ class ProviderTestCase(BaseTestCase):
                                   json=self.patch_provider)
         data = json.loads(res.data)
         self.check_403(res, data)
+
 
 # Make the tests conveniently executable
 if __name__ == "__main__":

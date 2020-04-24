@@ -1,9 +1,11 @@
 from .shared import db
 import json
-    
+
 '''
 Provider, extends the base SQLAlchemy Model
 '''
+
+
 class Provider(db.Model):
     __tablename__ = 'providers'
 
@@ -16,10 +18,10 @@ class Provider(db.Model):
     phone = db.Column(db.String(120), nullable=False)
     description = db.Column(db.String(120), nullable=False)
     image_link = db.Column(db.String(500))
-    
+
     # Child table: Menu items
     menu_items = db.relationship('MenuItem', backref='providers', lazy=True)
-        
+
     def __init__(self, name, address, phone, description, image_link=''):
         self.name = name
         self.address = address
@@ -37,6 +39,7 @@ class Provider(db.Model):
                                 image_link=image_link)
             provider.insert()
     '''
+
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -51,6 +54,7 @@ class Provider(db.Model):
                 provider.name = 'Super Sushi'
                 provider.update()
     '''
+
     def update(self):
         db.session.commit()
 
@@ -63,6 +67,7 @@ class Provider(db.Model):
             if provider:
                 provider.delete()
     '''
+
     def delete(self):
         for menu_item in self.menu_items:
             menu_item.delete()
@@ -77,6 +82,7 @@ class Provider(db.Model):
             provider = Provider.query.filter(Provider.id == provider_id).one_or_none()
             print(provider.format())
     '''
+
     def format(self):
         return {
             'id': self.id,

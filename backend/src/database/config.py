@@ -10,12 +10,10 @@ DEBUG = True
 
 if not os.environ.get('DATABASE_URL'):
     print('Connected to the database named: ', database_name)
-    SQLALCHEMY_DATABASE_URI = "postgres://{}/{}".format('localhost:5432', database_name)
+    SQLALCHEMY_DATABASE_URI = "postgres://{}/{}".format(
+        'localhost:5432', database_name)
 else:
     print('Found Herokus postgres url')
     SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL')
 
 SQLALCHEMY_TRACK_MODIFICATIONS = False
-
-
-
