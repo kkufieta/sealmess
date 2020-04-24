@@ -67,3 +67,18 @@ conn.close()
 customer_header = {"Authorization": "Bearer {}".format(customer_access_token)}
 provider_header = {"Authorization": "Bearer {}".format(provider_access_token)}
 owner_header = {"Authorization": "Bearer {}".format(owner_access_token)}
+
+if __name__ == "__main__":
+    print('')
+    print("--- Customer Access Token ---")
+    print('')
+    print(customer_access_token)
+    print('')
+    print("--- Provider Access Token ---")
+    print('')
+    print(provider_access_token)
+    print('')
+    print("--- Owner Access Token ---")
+    print('')
+    print(owner_access_token)
+    print('')
