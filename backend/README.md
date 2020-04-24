@@ -159,7 +159,7 @@ curl --request GET \
 ```
 
 ## Endpoints
-* Overview of relative endpoints:
+### Overview of the relative endpoints
   * GET
     * /
     * /createdata
@@ -186,17 +186,18 @@ curl --request GET \
     * /providers/{int:provider_id}
     * /providers/{int:provider_id}/menu/{int:menu_item_id}
 
-### GET /
+### Detailed Information and Example Usage
+#### GET /
 * General:
   * Welcome Homepage, and a sanity check to see if the app runs.
 * Sample: `curl https://sealmess.herokuapp.com`
 
-### GET /createdata
+#### GET /createdata
 * General:
   * For the convenience of a developer, to populate & add data into the DB.
 * Sample: `curl https://sealmess.herokuapp.com/createdata`
 
-### GET /customers/{int:customer_id}
+#### GET /customers/{int:customer_id}
 * General:
   * Get information about a specific customer
   * RBAC: Customer
@@ -207,7 +208,7 @@ curl --request GET \
   --header "authorization: Bearer ${CUSTOMER_ACCESS_TOKEN}"
 ```
 
-### GET /customers/{int:customer_id}/orders
+#### GET /customers/{int:customer_id}/orders
 * General:
   * Get the orders from a specific customer
   * RBAC: Customer
@@ -218,7 +219,7 @@ curl --request GET \
   --header "authorization: Bearer ${CUSTOMER_ACCESS_TOKEN}"
 ```
 
-### GET /customers/{int:customer_id}/orders/{int:order_id}
+#### GET /customers/{int:customer_id}/orders/{int:order_id}
 * General:
   * Get a specific order from a specific customer
   * RBAC: Customer
@@ -229,27 +230,27 @@ curl --request GET \
   --header "authorization: Bearer ${CUSTOMER_ACCESS_TOKEN}"
 ```
 
-### GET /providers
+#### GET /providers
 * General:
   * Get a list of providers
 * Sample: `curl https://sealmess.herokuapp.com/providers`
 
-### GET /providers/{int:provider_id}
+#### GET /providers/{int:provider_id}
 * General:
   * Get a specific provider
 * Sample: `curl https://sealmess.herokuapp.com/providers/1`
 
-### GET /providers/{int:provider_id}/menu
+#### GET /providers/{int:provider_id}/menu
 * General:
   * Get the menu of a specific provider
 * Sample: `curl https://sealmess.herokuapp.com/providers/1/menu`
 
-### GET /providers/{int:provider_id}/menu/{int:menu_item}
+#### GET /providers/{int:provider_id}/menu/{int:menu_item}
 * General:
   * Get a specific menu item of the menu of a specific provider
 * Sample: `curl https://sealmess.herokuapp.com/providers/1/menu/1`
 
-### POST /customers
+#### POST /customers
 * General:
   * Add a customer
   * RBAC: Customer
@@ -261,4 +262,139 @@ curl --request POST \
   --header "Content-Type: application/json" \
   --data '{"first_name": "kat", "last_name": "kk", "address": "home", "phone": "xxx"}'
 ```
-  
+
+#### POST /customers/{int:customer_id}/orders
+* General:
+  * Add a new order to a specific customer
+  * RBAC: Customer
+* Sample:
+```bash
+curl --request POST \
+  --url https://sealmess.herokuapp.com/customers/1/orders \
+  --header "authorization: Bearer ${CUSTOMER_ACCESS_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data '{"customer_id": 1, "status": "eaten", "menu_item_ids": []}'
+```
+
+#### POST /orders/{int:order_id}/menu_items
+* General:
+  * Add a new menu item to an existing order
+  * RBAC: Customer
+* Sample:
+```bash
+curl --request POST \
+  --url https://sealmess.herokuapp.com/orders/21/menu_items \
+  --header "authorization: Bearer ${CUSTOMER_ACCESS_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data '{"menu_item_ids": [3]}'
+```
+
+#### POST /providers
+* General:
+  * Add a new provider
+  * RBAC: Provider
+* Sample:
+```bash
+curl --request POST \
+  --url https://sealmess.herokuapp.com/providers \
+  --header "authorization: Bearer ${PROVIDER_ACCESS_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data '{"name": "Sushi", "address": "Around the Corner", "phone": "sss", "description": "Delicious!"}'
+```
+
+#### POST /providers/{int:provider_id}/menu
+* General:
+  * Add a new menu item to a specific provider
+  * RBAC: Provider
+* Sample:
+```bash
+curl --request POST \
+  --url https://sealmess.herokuapp.com/providers/1/menu \
+  --header "authorization: Bearer ${PROVIDER_ACCESS_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data '{"provider_id": 1, "name": "New Food Item!", "description": "so good..", "price": 12.12}'
+```
+
+#### PATCH /customers/{int:customer_id}
+* General:
+  * Edit a specific customer
+  * RBAC: Customer
+* Sample:
+```bash
+curl --request PATCH \
+  --url https://sealmess.herokuapp.com/customers/1 \
+  --header "authorization: Bearer ${CUSTOMER_ACCESS_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data '{"first_name": "KITTYKAT"}'
+```
+
+#### PATCH /providers/{int:provider_id}
+* General:
+  * Edit a specific provider
+  * RBAC: Provider
+* Sample:
+```bash
+curl --request PATCH \
+  --url https://sealmess.herokuapp.com/providers/1 \
+  --header "authorization: Bearer ${PROVIDER_ACCESS_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data '{"name": "Bayrische Kueche Ist Die Beste!"}'
+```
+
+#### PATCH /providers/{int:provider_id}/menu/{int:menu_item_id}
+* General:
+  * Edit a specific menu item on the menu of a specific provider
+  * RBAC: Provider
+* Sample:
+```bash
+curl --request PATCH \
+  --url https://sealmess.herokuapp.com/providers/2/menu/3 \
+  --header "authorization: Bearer ${PROVIDER_ACCESS_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data '{"description": "Short ribs are delicious!"}'
+```
+
+#### DELETE /customers/{int:customer_id}
+* General:
+  * Delete a specific customer
+  * RBAC: Customer
+* Sample:
+```bash
+curl --request DELETE \
+  --url https://sealmess.herokuapp.com/customers/3 \
+  --header "authorization: Bearer ${CUSTOMER_ACCESS_TOKEN}"
+```
+
+#### DELETE /customers/{int:customer_id}/orders/{int:order_id}
+* General:
+  * Delete a specific order from a specific customer
+  * RBAC: Customer
+* Sample:
+```bash
+curl --request DELETE \
+  --url https://sealmess.herokuapp.com/customers/4/orders/23 \
+  --header "authorization: Bearer ${CUSTOMER_ACCESS_TOKEN}"
+```
+
+
+#### DELETE /providers/{int:provider_id}
+* General:
+  * Delete a specific provider
+  * RBAC: Provider, Owner
+* Sample:
+```bash
+curl --request DELETE \
+  --url https://sealmess.herokuapp.com/providers/14 \
+  --header "authorization: Bearer ${OWNER_ACCESS_TOKEN}"
+```
+
+#### DELETE /providers/{int:provider_id}/menu/{int:menu_item_id}
+* General:
+  * Delete a specific menu_item from a specific providers menu
+  * RBAC: Provider
+* Sample:
+```bash
+curl --request DELETE \
+  --url https://sealmess.herokuapp.com/providers/10/menu/34 \
+  --header "authorization: Bearer ${PROVIDER_ACCESS_TOKEN}"
+```
