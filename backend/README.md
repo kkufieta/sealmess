@@ -39,6 +39,11 @@ You have to create the database before running the server.
 $ createdb sealmess
 ```
 
+Also make sure to load the necessary environment variables
+```bash
+# source setup.sh
+```
+
 ### Migrations
 ```bash
 $ cd src/
