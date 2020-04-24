@@ -206,12 +206,18 @@ curl --request GET \
 #### GET /
 * General:
   * Welcome Homepage, and a sanity check to see if the app runs.
-* Sample: `curl https://sealmess.herokuapp.com`
+* Sample: 
+```bash
+curl https://sealmess.herokuapp.com
+```
 
 #### GET /createdata
 * General:
   * For the convenience of a developer, to populate & add data into the DB.
-* Sample: `curl https://sealmess.herokuapp.com/createdata`
+* Sample: 
+```bash
+curl https://sealmess.herokuapp.com/createdata
+```
 
 #### GET /customers/{int:customer_id}
 * General:
@@ -249,22 +255,34 @@ curl --request GET \
 #### GET /providers
 * General:
   * Get a list of providers
-* Sample: `curl https://sealmess.herokuapp.com/providers`
+* Sample: 
+```bash
+curl https://sealmess.herokuapp.com/providers
+```
 
 #### GET /providers/{int:provider_id}
 * General:
   * Get a specific provider
-* Sample: `curl https://sealmess.herokuapp.com/providers/1`
+* Sample: 
+```bash
+curl https://sealmess.herokuapp.com/providers/1
+```
 
 #### GET /providers/{int:provider_id}/menu
 * General:
   * Get the menu of a specific provider
-* Sample: `curl https://sealmess.herokuapp.com/providers/1/menu`
+* Sample: 
+```bash
+curl https://sealmess.herokuapp.com/providers/1/menu
+```
 
 #### GET /providers/{int:provider_id}/menu/{int:menu_item}
 * General:
   * Get a specific menu item of the menu of a specific provider
-* Sample: `curl https://sealmess.herokuapp.com/providers/1/menu/1`
+* Sample: 
+```bash
+curl https://sealmess.herokuapp.com/providers/1/menu/1
+```
 
 #### POST /customers
 * General:
