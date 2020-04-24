@@ -101,6 +101,10 @@ $ python3 -m unittest run_tests.py -v
 ```
 
 
+
+
+# API Architecture
+
 ## General Information
 ### Data Modeling
 
@@ -125,7 +129,6 @@ It requires four classes, with one-to-many and many-to-many relationships betwee
 | phone         | description  | price                |                         |                                   |
 |               | image_link   | image_link           |                         |                                   |  
 
-# API Architecture
 ## Getting Started
 The app can be run locally, hosted by default at http://localhost:5000, or it can be tested live at https://sealmess.herokuapp.com/.
 
@@ -160,37 +163,102 @@ curl --request GET \
   * GET
     * /
     * /createdata
-    * /customers/<int:customer_id>
-    * /customers/<int:customer_id>/orders
-    * /customers/<int:customer_id>/orders/<int:order_id>
+    * /customers/{int:customer_id}
+    * /customers/{int:customer_id}/orders
+    * /customers/{int:customer_id}/orders/{int:order_id}
     * /providers
-    * /providers/<int:provider_id>
-    * /providers/<int:provider_id>/menu
-    * /providers/<int:provider_id>/menu/<int:menu_item_id>
+    * /providers/{int:provider_id}
+    * /providers/{int:provider_id}/menu
+    * /providers/{int:provider_id}/menu/{int:menu_item_id}
   * POST
     * /customers
-    * /customers/<int:customer_id>/orders
-    * /orders/<int:order_id>/menu_items
+    * /customers/{int:customer_id}/orders
+    * /orders/{int:order_id}/menu_items
     * /providers
-    * /providers/<int:provider_id>/menu
+    * /providers/{int:provider_id}/menu
   * PATCH
-    * /customers/<int:customer_id>
-    * /providers/<int:provider_id>
-    * /providers/<int:provider_id>/menu/<int:menu_item_id>
+    * /customers/{int:customer_id}
+    * /providers/{int:provider_id}
+    * /providers/{int:provider_id}/menu/{int:menu_item_id}
   * DELETE
-    * /customers/<int:customer_id>
-    * /customers/<int:customer_id>/orders/<int:order_id>
-    * /providers/<int:provider_id>
-    * /providers/<int:provider_id>/menu/<int:menu_item_id>
+    * /customers/{int:customer_id}
+    * /customers/{int:customer_id}/orders/{int:order_id}
+    * /providers/{int:provider_id}
+    * /providers/{int:provider_id}/menu/{int:menu_item_id}
 
+### GET /
+* General:
+  * Welcome Homepage, and a sanity check to see if the app runs.
+* Sample: `curl https://sealmess.herokuapp.com`
 
-# Customer
+### GET /createdata
+* General:
+  * For the convenience of a developer, to populate & add data into the DB.
+* Sample: `curl https://sealmess.herokuapp.com/createdata`
+
+### GET /customers/{int:customer_id}
+* General:
+  * Get information about a specific customer
+  * RBAC: Customer
+* Sample:
+```bash
 curl --request GET \
   --url https://sealmess.herokuapp.com/customers/1 \
-  --header 'authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik4wVXdOamxFTjBZMFJFSTFRa1ExT0RZeU56WXdOa1F3UkRZNU1VRkZNalJHTkVZME16RkZSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi05cnFoMnRpYi5hdXRoMC5jb20vIiwic3ViIjoiT3daajVZUXFFN2tSUmhJNmY2S3RqbVdpMGdrMURwVGxAY2xpZW50cyIsImF1ZCI6InNlYWxtZXNzIiwiaWF0IjoxNTg3NjY1NzQyLCJleHAiOjE1ODc3NTIxNDIsImF6cCI6Ik93Wmo1WVFxRTdrUlJoSTZmNkt0am1XaTBnazFEcFRsIiwic2NvcGUiOiJwb3N0OmN1c3RvbWVyIGdldDpjdXN0b21lciBwYXRjaDpjdXN0b21lciBkZWxldGU6Y3VzdG9tZXIgcG9zdDpvcmRlciBnZXQ6b3JkZXIgZGVsZXRlOm9yZGVyIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwicGVybWlzc2lvbnMiOlsicG9zdDpjdXN0b21lciIsImdldDpjdXN0b21lciIsInBhdGNoOmN1c3RvbWVyIiwiZGVsZXRlOmN1c3RvbWVyIiwicG9zdDpvcmRlciIsImdldDpvcmRlciIsImRlbGV0ZTpvcmRlciJdfQ.grv-iwXrAmv6h-XBIN-3ZKyxUd_0nM-p2tnhJ2l1ZM2D1qoA2GQk2oHjzrs7qAHEnBPUq0GC6d89uuzRoMHigbioXumSxvE1ZqeK1-R78n8cvnUJem_Q0tlqoBOKCmljfDc6-1RUPoxen7RpTKr-VkO2iGQ1TEc-7JAQviliyPOffYMbQf8M9RseK5HdwbGdEV1LSwsro8f-vZ9IHte0ts5388MdhjbzTdCTMgEQiieeX8qEaJT5kiTykQL0ntaF4JEIoywTWazU0iT1e2lSnrWsbqgVIwRB4pvoheHhNpx4jFYbFi_UmKO63pvXB0mQAf02aVKRCbcpz_bbyL7R2w'
+  --header "authorization: Bearer ${CUSTOMER_ACCESS_TOKEN}"
+```
 
-# Owner
-  curl --request GET \
-  --url https://sealmess.herokuapp.com/customers/1 \
-  --header 'authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik4wVXdOamxFTjBZMFJFSTFRa1ExT0RZeU56WXdOa1F3UkRZNU1VRkZNalJHTkVZME16RkZSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi05cnFoMnRpYi5hdXRoMC5jb20vIiwic3ViIjoidXd6MHhVbWU0eXVaMHEyRmM5bW5FQkFoTkY1bjNIRHVAY2xpZW50cyIsImF1ZCI6InNlYWxtZXNzIiwiaWF0IjoxNTg3NjY2MTg0LCJleHAiOjE1ODc3NTI1ODQsImF6cCI6InV3ejB4VW1lNHl1WjBxMkZjOW1uRUJBaE5GNW4zSER1Iiwic2NvcGUiOiJkZWxldGU6cHJvdmlkZXIiLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMiLCJwZXJtaXNzaW9ucyI6WyJkZWxldGU6cHJvdmlkZXIiXX0.Up0gkdISLGANS-V5UrjclJ9JB9N8lqxsFlnI4wZsBYA-7StyAEkVYqf8HRaxypYTapKDCp9XpFGH-74cGcYv2AgrQCcoLNFv8FKGzLzJVxfpU-lkbBkFqWKGqLj63xtgJGHafEQVS6zpuvMxlXiS3Er75spEP1Cs-qP3TYxgljxfZBrui3YzOM_TqxzMVX6zd3EnG7LeUqipvZgS0udAPLYmUYKUFP1ng77SfotfBM4qfaX42bGHDFjWCevpxdrRKPEh1TeTESmY3wAJ3Mj81KTn8r92aA06K5uMJG-mbQPrWWUIJA6Xvjrl-ZDxw4bEceK8VffDBV-cSMJfIQCIPw'
+### GET /customers/{int:customer_id}/orders
+* General:
+  * Get the orders from a specific customer
+  * RBAC: Customer
+* Sample:
+```bash
+curl --request GET \
+  --url https://sealmess.herokuapp.com/customers/1/orders \
+  --header "authorization: Bearer ${CUSTOMER_ACCESS_TOKEN}"
+```
+
+### GET /customers/{int:customer_id}/orders/{int:order_id}
+* General:
+  * Get a specific order from a specific customer
+  * RBAC: Customer
+* Sample:
+```bash
+curl --request GET \
+  --url https://sealmess.herokuapp.com/customers/1/orders/1 \
+  --header "authorization: Bearer ${CUSTOMER_ACCESS_TOKEN}"
+```
+
+### GET /providers
+* General:
+  * Get a list of providers
+* Sample: `curl https://sealmess.herokuapp.com/providers`
+
+### GET /providers/{int:provider_id}
+* General:
+  * Get a specific provider
+* Sample: `curl https://sealmess.herokuapp.com/providers/1`
+
+### GET /providers/{int:provider_id}/menu
+* General:
+  * Get the menu of a specific provider
+* Sample: `curl https://sealmess.herokuapp.com/providers/1/menu`
+
+### GET /providers/{int:provider_id}/menu/{int:menu_item}
+* General:
+  * Get a specific menu item of the menu of a specific provider
+* Sample: `curl https://sealmess.herokuapp.com/providers/1/menu/1`
+
+### POST /customers
+* General:
+  * Add a customer
+  * RBAC: Customer
+* Sample:
+```bash
+curl --request POST \
+  --url https://sealmess.herokuapp.com/customers \
+  --header "authorization: Bearer ${CUSTOMER_ACCESS_TOKEN}" \
+  --header "Content-Type: application/json" \
+  --data '{"first_name": "kat", "last_name": "kk", "address": "home", "phone": "xxx"}'
+```
   
