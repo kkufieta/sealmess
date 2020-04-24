@@ -137,14 +137,16 @@ There are three roles that have different RBAC:
 
 To create JWT access tokens in order to test the endpoints manually, one can run:
 ```bash
+$ source setup_test.sh
 $ python3 src/tests/config.py
 ```
-which will print out the access tokens.
-
-Assume you copy one of the access tokens into an environment variable like this for example:
+which will print out the access tokens ready to be copy-pasted into the terminal to load them as environment variables, which will look like this (with real access tokens):
 ```bash
-CUSTOMER_ACCESS_TOKEN='eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik4wVXdOamxFTjBZMFJFSTFRa1ExT0RZeU56WXdOa1F3UkRZNU1VRkZNalJHTkVZME16RkZSQSJ9.eyJpc3MiOiJodHRwczovL2Rldi05cnFoMnRpYi5hdXRoMC5jb20vIiwic3ViIjoiT3daajVZUXFFN2tSUmhJNmY2S3RqbVdpMGdrMURwVGxAY2xpZW50cyIsImF1ZCI6InNlYWxtZXNzIiwiaWF0IjoxNTg3Njg4NTMxLCJleHAiOjE1ODc3NzQ5MzEsImF6cCI6Ik93Wmo1WVFxRTdrUlJoSTZmNkt0am1XaTBnazFEcFRsIiwic2NvcGUiOiJwb3N0OmN1c3RvbWVyIGdldDpjdXN0b21lciBwYXRjaDpjdXN0b21lciBkZWxldGU6Y3VzdG9tZXIgcG9zdDpvcmRlciBnZXQ6b3JkZXIgZGVsZXRlOm9yZGVyIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIiwicGVybWlzc2lvbnMiOlsicG9zdDpjdXN0b21lciIsImdldDpjdXN0b21lciIsInBhdGNoOmN1c3RvbWVyIiwiZGVsZXRlOmN1c3RvbWVyIiwicG9zdDpvcmRlciIsImdldDpvcmRlciIsImRlbGV0ZTpvcmRlciJdfQ.TRJyZh5MzSAu77Plf5bydKtX84EdaMUsbgtogKv1Zz1SIZIeeEP-kgfaA8Ns6LCvFTMoknRJ_0q1kpxsg7IU0ZJwiZHQ8HTVio4tsLSIYTPTv_i-Tsws201zsWwho4sLm7J1AwdyZU4EBFhQzpuUpPxt5nXo46DoyM2gADYNhj2oWx_HsQ43hCLuBA4UgpLUQ0oADrgo3tGGr6uf-f3FWXKJEMADXQrVCdZLNUF6uckG0FFPFrk9sZBfGH9kjzn29_3GBR_TYcqaPlmFiUZw-5dbIKhZp9mDBNRRI74OxUvsgNMInG2OUfPtntvSnFGsC_jPMVle2VP6VXFc9lwIbw'
+CUSTOMER_ACCESS_TOKEN="...."
+PROVIDER_ACCESS_TOKEN="..."
+OWNER_ACCESS_TOKEN="..."
 ```
+Copy & paste that output into your terminal to load the access tokens into environment variables.
 
 One can then go ahead and test one of the endpoints using `curl` like this:
 ```bash
