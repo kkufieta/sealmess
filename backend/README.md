@@ -46,7 +46,7 @@ $ export FLASK_APP=views/views.py
 # flask db init
 $ flask db migrate
 $ flask db upgrade
-$ # flask db downgrade
+# flask db downgrade
 ```
 
 Alternatively, you can use the `migrate.py` script like this:
@@ -77,8 +77,10 @@ $ python3 run.py
 Navigate to Home page [http://localhost:5000](http://localhost:5000)
 
 ## Testing
-Ensure first that you are working using your created virtual environment,
-and that you are in the `\backend` directory
+Ensure that you are working using your created virtual environment. If not, run:
+```bash
+$ source env/bin/activate
+```
 
 Prepare the test database:
 ```bash
@@ -118,48 +120,42 @@ It requires four classes, with one-to-many and many-to-many relationships betwee
 | phone         | description  | price                |                         |                                   |
 |               | image_link   | image_link           |                         |                                   |  
 
-### API Architecture
+# API Architecture
+## Getting Started
+The app can be run locally, hosted by default at http://localhost:5000, or it can be tested live at https://sealmess.herokuapp.com/.
 
-### Third-Party Authentication
+## Third-Party Authentication
+TODO: Add information on how to create tokens
 
-### Overview over roles, actions, and endpoints
-* Roles: Customer, Provider, Owner (of the website, i.e. me)
-* Actions: 
-  * Customer:
-    * can view, edit, and delete own account. 
-    * can view providers and their menu items, and select menu items as their favorite ones.
-    * can view the list of favorite menu items.
-  * Provider:
-    * can view, edit, and delete own account.
-    * can view and edit own list of menu-items.
-  * Owner:
-    * can view statistics on customers, providers, and menu items: number of customers, number of providers, list of menu items sorted by how popular they are.
-    * can view providers and their menu items.
-    * can delete providers (e.g. in the case of violations)
-* Endpoints:
+-url http://path_to_your_api/ \
+
+## Endpoints
+* Overview of relative endpoints:
   * GET
+    * /
+    * /createdata
     * /customers/<int:customer_id>
-    * /customers/<int:customer_id>/order
+    * /customers/<int:customer_id>/orders
+    * /customers/<int:customer_id>/orders/<int:order_id>
     * /providers
     * /providers/<int:provider_id>
-    * /statistics
+    * /providers/<int:provider_id>/menu
+    * /providers/<int:provider_id>/menu/<int:menu_item_id>
   * POST
     * /customers
-    * /customers/<int:customer_id>/order
+    * /customers/<int:customer_id>/orders
+    * /orders/<int:order_id>/menu_items
     * /providers
     * /providers/<int:provider_id>/menu
-    * /search
   * PATCH
     * /customers/<int:customer_id>
     * /providers/<int:provider_id>
     * /providers/<int:provider_id>/menu/<int:menu_item_id>
   * DELETE
     * /customers/<int:customer_id>
-    * /customers/<int:customer_id>/order/<int:menu_item_id>
+    * /customers/<int:customer_id>/orders/<int:order_id>
     * /providers/<int:provider_id>
     * /providers/<int:provider_id>/menu/<int:menu_item_id>
-
-
 
 
 # Customer
